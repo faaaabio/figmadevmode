@@ -486,10 +486,10 @@ color: var(--text-color);"></textarea>
         }
 
         // Conversor para Tailwind CSS
-        function convertToTailwind(layout, style, icon) {
+        function convertToTailwind(layout, style, icon, tab, allInputs) {
             const layoutStyles = parseCSS(layout);
             const styleStyles = parseCSS(style);
-            const iconStyles = icon.style ? parseCSS(icon.style) : {};
+            const iconStyles = icon && icon.style ? parseCSS(icon.style) : {};
 
             const allStyles = { ...layoutStyles, ...styleStyles };
             const classes = [];
@@ -581,28 +581,44 @@ color: var(--text-color);"></textarea>
             const containerClasses = classes.filter(c => c).join(' ');
 
             // Gera código do componente
-            let code = `// Componente Tailwind CSS\n`;
-            code += `<div className="${containerClasses}">\n`;
+            let code = `// Componente Tailwind CSS (${tab})\n`;
 
-            if (icon.name) {
-                const iconClasses = [];
-                if (iconStyles.width) iconClasses.push(`w-[${resolveCSSVariables(iconStyles.width)}]`);
-                if (iconStyles.height) iconClasses.push(`h-[${resolveCSSVariables(iconStyles.height)}]`);
-
-                code += `  {/* Ícone: ${icon.name} */}\n`;
-                code += `  <Icon name="${icon.name}" className="${iconClasses.join(' ')}" />\n`;
+            if (tab === 'botao') {
+                code += `<button className="${containerClasses}">\n`;
+                if (icon && icon.name) {
+                    const iconClasses = [];
+                    if (iconStyles.width) iconClasses.push(`w-[${resolveCSSVariables(iconStyles.width)}]`);
+                    if (iconStyles.height) iconClasses.push(`h-[${resolveCSSVariables(iconStyles.height)}]`);
+                    code += `  <Icon name="${icon.name}" className="${iconClasses.join(' ')}" />\n`;
+                }
+                code += `  <span>${allInputs.text || 'Button'}</span>\n`;
+                code += `</button>`;
+            } else if (tab === 'lista') {
+                code += `<ul className="${containerClasses}">\n`;
+                code += `  <li>Item 1</li>\n`;
+                code += `  <li>Item 2</li>\n`;
+                code += `  <li>Item 3</li>\n`;
+                code += `</ul>`;
+            } else if (tab === 'input') {
+                code += `<input\n`;
+                code += `  type="text"\n`;
+                code += `  placeholder="${allInputs.placeholder || 'Enter text...'}"\n`;
+                code += `  className="${containerClasses}"\n`;
+                code += `/>`;
+            } else if (tab === 'tipografia') {
+                code += `<span className="${containerClasses}">${allInputs.text || 'Texto'}</span>`;
+            } else {
+                code += `<div className="${containerClasses}">Conteúdo</div>`;
             }
-
-            code += `</div>`;
 
             return code;
         }
 
         // Conversor para React Native
-        function convertToReactNative(layout, style, icon) {
+        function convertToReactNative(layout, style, icon, tab, allInputs) {
             const layoutStyles = parseCSS(layout);
             const styleStyles = parseCSS(style);
-            const iconStyles = icon.style ? parseCSS(icon.style) : {};
+            const iconStyles = icon && icon.style ? parseCSS(icon.style) : {};
 
             const allStyles = { ...layoutStyles, ...styleStyles };
             const rnStyles = {};
@@ -671,36 +687,71 @@ color: var(--text-color);"></textarea>
             }
 
             // Gera código
-            let code = `// Componente React Native\n`;
-            code += `import { View } from 'react-native';\n`;
-            if (icon.name) {
-                code += `import { ${toPascalCase(icon.name)} } from 'lucide-react-native';\n`;
+            let code = `// Componente React Native (${tab})\n`;
+
+            if (tab === 'botao') {
+                code += `import { TouchableOpacity, Text } from 'react-native';\n`;
+                if (icon && icon.name) {
+                    code += `import { ${toPascalCase(icon.name)} } from 'lucide-react-native';\n`;
+                }
+                code += `\n`;
+                code += `const styles = StyleSheet.create({\n`;
+                code += `  button: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
+                if (icon && icon.name && Object.keys(iconRNStyles).length > 0) {
+                    code += `  icon: ${JSON.stringify(iconRNStyles, null, 4).replace(/"/g, "'")},\n`;
+                }
+                code += `});\n\n`;
+                code += `<TouchableOpacity style={styles.button}>\n`;
+                if (icon && icon.name) {
+                    code += `  <${toPascalCase(icon.name)} ${Object.keys(iconRNStyles).length > 0 ? 'style={styles.icon}' : ''} />\n`;
+                }
+                code += `  <Text>${allInputs.text || 'Button'}</Text>\n`;
+                code += `</TouchableOpacity>`;
+            } else if (tab === 'lista') {
+                code += `import { View, Text, FlatList } from 'react-native';\n\n`;
+                code += `const styles = StyleSheet.create({\n`;
+                code += `  list: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
+                code += `});\n\n`;
+                code += `<FlatList\n`;
+                code += `  data={['Item 1', 'Item 2', 'Item 3']}\n`;
+                code += `  renderItem={({item}) => <Text>{item}</Text>}\n`;
+                code += `  style={styles.list}\n`;
+                code += `/>`;
+            } else if (tab === 'input') {
+                code += `import { TextInput } from 'react-native';\n\n`;
+                code += `const styles = StyleSheet.create({\n`;
+                code += `  input: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
+                code += `});\n\n`;
+                code += `<TextInput\n`;
+                code += `  placeholder="${allInputs.placeholder || 'Enter text...'}"\n`;
+                code += `  style={styles.input}\n`;
+                code += `/>`;
+            } else if (tab === 'tipografia') {
+                code += `import { Text } from 'react-native';\n\n`;
+                code += `const styles = StyleSheet.create({\n`;
+                code += `  text: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
+                code += `});\n\n`;
+                code += `<Text style={styles.text}>${allInputs.text || 'Texto'}</Text>`;
+            } else {
+                code += `import { View } from 'react-native';\n\n`;
+                code += `const styles = StyleSheet.create({\n`;
+                code += `  container: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
+                code += `});\n\n`;
+                code += `<View style={styles.container}></View>`;
             }
-            code += `\n`;
-            code += `const styles = StyleSheet.create({\n`;
-            code += `  container: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
-            if (icon.name && Object.keys(iconRNStyles).length > 0) {
-                code += `  icon: ${JSON.stringify(iconRNStyles, null, 4).replace(/"/g, "'")},\n`;
-            }
-            code += `});\n\n`;
-            code += `<View style={styles.container}>\n`;
-            if (icon.name) {
-                code += `  <${toPascalCase(icon.name)} ${Object.keys(iconRNStyles).length > 0 ? 'style={styles.icon}' : ''} />\n`;
-            }
-            code += `</View>`;
 
             return code;
         }
 
         // Conversor para Flutter
-        function convertToFlutter(layout, style, icon) {
+        function convertToFlutter(layout, style, icon, tab, allInputs) {
             const layoutStyles = parseCSS(layout);
             const styleStyles = parseCSS(style);
-            const iconStyles = icon.style ? parseCSS(icon.style) : {};
+            const iconStyles = icon && icon.style ? parseCSS(icon.style) : {};
 
             const allStyles = { ...layoutStyles, ...styleStyles };
 
-            let code = `// Widget Flutter\n`;
+            let code = `// Widget Flutter (${tab})\n`;
 
             // Container com decoração
             const hasDecoration = allStyles['border-radius'] || allStyles.border || allStyles['background-color'];
@@ -752,48 +803,73 @@ color: var(--text-color);"></textarea>
                 code += `  ),\n`;
             }
 
-            // Child (Row/Column para flex)
-            if (allStyles.display === 'flex') {
-                const isColumn = allStyles['flex-direction'] === 'column';
-                const widget = isColumn ? 'Column' : 'Row';
-
-                code += `  child: ${widget}(\n`;
-
-                // MainAxisAlignment (justify-content)
-                if (allStyles['justify-content']) {
-                    const justifyMap = {
-                        'center': 'MainAxisAlignment.center',
-                        'flex-start': 'MainAxisAlignment.start',
-                        'flex-end': 'MainAxisAlignment.end',
-                        'space-between': 'MainAxisAlignment.spaceBetween',
-                        'space-around': 'MainAxisAlignment.spaceAround',
-                    };
-                    code += `    mainAxisAlignment: ${justifyMap[allStyles['justify-content']] || 'MainAxisAlignment.start'},\n`;
-                }
-
-                // CrossAxisAlignment (align-items)
-                if (allStyles['align-items']) {
-                    const alignMap = {
-                        'center': 'CrossAxisAlignment.center',
-                        'flex-start': 'CrossAxisAlignment.start',
-                        'flex-end': 'CrossAxisAlignment.end',
-                        'stretch': 'CrossAxisAlignment.stretch',
-                    };
-                    code += `    crossAxisAlignment: ${alignMap[allStyles['align-items']] || 'CrossAxisAlignment.start'},\n`;
-                }
-
-                code += `    children: [\n`;
-
-                if (icon.name) {
+            // Child baseado na aba
+            if (tab === 'botao') {
+                code += `  child: ElevatedButton(\n`;
+                code += `    onPressed: () {},\n`;
+                if (icon && icon.name) {
+                    code += `    child: Row(\n`;
+                    code += `      children: [\n`;
                     const iconSize = iconStyles.width ? pxToNumber(resolveCSSVariables(iconStyles.width)) : 24;
-                    code += `      Icon(\n`;
-                    code += `        Icons.${icon.name.replace(/-/g, '_')},\n`;
-                    code += `        size: ${iconSize},\n`;
-                    code += `      ),\n`;
+                    code += `        Icon(Icons.${icon.name.replace(/-/g, '_')}, size: ${iconSize}),\n`;
+                    code += `        SizedBox(width: 8),\n`;
+                    code += `        Text('${allInputs.text || 'Button'}'),\n`;
+                    code += `      ],\n`;
+                    code += `    ),\n`;
+                } else {
+                    code += `    child: Text('${allInputs.text || 'Button'}'),\n`;
                 }
-
+                code += `  ),\n`;
+            } else if (tab === 'lista') {
+                code += `  child: ListView(\n`;
+                code += `    children: [\n`;
+                code += `      ListTile(title: Text('Item 1')),\n`;
+                code += `      ListTile(title: Text('Item 2')),\n`;
+                code += `      ListTile(title: Text('Item 3')),\n`;
                 code += `    ],\n`;
                 code += `  ),\n`;
+            } else if (tab === 'input') {
+                code += `  child: TextField(\n`;
+                code += `    decoration: InputDecoration(\n`;
+                code += `      hintText: '${allInputs.placeholder || 'Enter text...'}',\n`;
+                code += `    ),\n`;
+                code += `  ),\n`;
+            } else if (tab === 'tipografia') {
+                code += `  child: Text('${allInputs.text || 'Texto'}'),\n`;
+            } else {
+                // Child (Row/Column para flex)
+                if (allStyles.display === 'flex') {
+                    const isColumn = allStyles['flex-direction'] === 'column';
+                    const widget = isColumn ? 'Column' : 'Row';
+
+                    code += `  child: ${widget}(\n`;
+
+                    // MainAxisAlignment (justify-content)
+                    if (allStyles['justify-content']) {
+                        const justifyMap = {
+                            'center': 'MainAxisAlignment.center',
+                            'flex-start': 'MainAxisAlignment.start',
+                            'flex-end': 'MainAxisAlignment.end',
+                            'space-between': 'MainAxisAlignment.spaceBetween',
+                            'space-around': 'MainAxisAlignment.spaceAround',
+                        };
+                        code += `    mainAxisAlignment: ${justifyMap[allStyles['justify-content']] || 'MainAxisAlignment.start'},\n`;
+                    }
+
+                    // CrossAxisAlignment (align-items)
+                    if (allStyles['align-items']) {
+                        const alignMap = {
+                            'center': 'CrossAxisAlignment.center',
+                            'flex-start': 'CrossAxisAlignment.start',
+                            'flex-end': 'CrossAxisAlignment.end',
+                            'stretch': 'CrossAxisAlignment.stretch',
+                        };
+                        code += `    crossAxisAlignment: ${alignMap[allStyles['align-items']] || 'CrossAxisAlignment.start'},\n`;
+                    }
+
+                    code += `    children: [],\n`;
+                    code += `  ),\n`;
+                }
             }
 
             code += `)`;
@@ -931,24 +1007,49 @@ color: var(--text-color);"></textarea>
                 if (tech === 'prompt') {
                     result = convertToPrompt();
                 } else {
-                    const inputs = {
-                        layout: layoutInput.value,
-                        style: styleInput.value,
-                        icon: {
-                            name: iconNameInput.value,
-                            style: '',
-                        }
-                    };
+                    let inputs = {};
+
+                    // Pega os dados conforme a aba ativa
+                    if (currentTab === 'botao') {
+                        inputs = {
+                            layout: layoutInput.value,
+                            style: styleInput.value,
+                            icon: {
+                                name: iconNameInput.value,
+                                style: document.getElementById('icon-style').value,
+                            },
+                            text: document.getElementById('text-content').value,
+                            textStyle: document.getElementById('text-style-botao').value
+                        };
+                    } else if (currentTab === 'lista') {
+                        inputs = {
+                            layout: document.getElementById('lista-layout').value,
+                            style: document.getElementById('lista-item-style').value,
+                            textStyle: document.getElementById('lista-text').value,
+                            text: 'Item'
+                        };
+                    } else if (currentTab === 'input') {
+                        inputs = {
+                            layout: document.getElementById('input-layout').value,
+                            style: document.getElementById('input-style').value,
+                            placeholder: document.getElementById('input-placeholder').value
+                        };
+                    } else if (currentTab === 'tipografia') {
+                        inputs = {
+                            text: document.getElementById('text-content-typo').value,
+                            textStyle: document.getElementById('text-style').value
+                        };
+                    }
 
                     switch(tech) {
                         case 'tailwind':
-                            result = convertToTailwind(inputs.layout, inputs.style, inputs.icon);
+                            result = convertToTailwind(inputs.layout || '', inputs.style || '', inputs.icon || {}, currentTab, inputs);
                             break;
                         case 'react-native':
-                            result = convertToReactNative(inputs.layout, inputs.style, inputs.icon);
+                            result = convertToReactNative(inputs.layout || '', inputs.style || '', inputs.icon || {}, currentTab, inputs);
                             break;
                         case 'flutter':
-                            result = convertToFlutter(inputs.layout, inputs.style, inputs.icon);
+                            result = convertToFlutter(inputs.layout || '', inputs.style || '', inputs.icon || {}, currentTab, inputs);
                             break;
                         default:
                             result = '// Tecnologia não suportada';
