@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Código Figma</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilo para a animação do toast */
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(20px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+        .toast-animation {
+            animation: fadeInOut 3s ease-in-out forwards;
+        }
+        /* Scrollbar customizada para a lista de ícones */
+        .suggestions-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .suggestions-scrollbar::-webkit-scrollbar-track {
+            background: #2d3748; /* cinza escuro */
+        }
+        .suggestions-scrollbar::-webkit-scrollbar-thumb {
+            background: #718096; /* cinza mais claro */
+            border-radius: 3px;
+        }
+        .suggestions-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a0aec0; /* cinza hover */
+        }
+    </style>
+</head>
+<body class="bg-black text-gray-300 font-sans text-sm">
+
+    <div class="p-4 md:p-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Coluna da Esquerda (Entradas) -->
+            <div>
+                <h2 class="text-lg font-bold text-white border-b border-gray-700 pb-2 mb-4">Figma Dev Mode</h2>
+
+                <!-- Abas -->
+                <div class="flex gap-2 mb-4">
+                    <button id="tab-botao" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-black">
+                        Botão
+                    </button>
+                    <button id="tab-lista" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-800 text-gray-400 hover:bg-gray-700">
+                        Lista
+                    </button>
+                    <button id="tab-input" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-800 text-gray-400 hover:bg-gray-700">
+                        Input
+                    </button>
+                    <button id="tab-tipografia" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-800 text-gray-400 hover:bg-gray-700">
+                        Tipografia
+                    </button>
+                </div>
+
+                <!-- Conteúdo das Abas -->
+                <div class="space-y-6">
+                    <!-- Aba Botão -->
+                    <div id="content-botao" class="tab-content space-y-4">
+                        <div>
+                            <label for="layout-input" class="block text-xs font-medium text-gray-400 mb-2">LAYOUT</label>
+                            <textarea id="layout-input" rows="5" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="display: flex;
+padding: 16px;
+justify-content: center;
+align-items: center;
+gap: 8px;"></textarea>
+                        </div>
+                        <div>
+                            <label for="style-input" class="block text-xs font-medium text-gray-400 mb-2">STYLE</label>
+                            <textarea id="style-input" rows="3" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="border-radius: 44px;
+border: 1px solid var(--Aux-2, #D4D4D4);"></textarea>
+                        </div>
+                        <div>
+                            <label for="text-content" class="block text-xs font-medium text-gray-400 mb-2">TEXTO</label>
+                            <input type="text" id="text-content" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm mb-2" placeholder="Digite o texto...">
+                            <textarea id="text-style-botao" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" rows="3" placeholder="font-family: Inter;
+font-size: 14px;
+font-weight: 500;"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">ÍCONE (OPCIONAL)</label>
+                            <div class="space-y-2">
+                                <div class="relative">
+                                    <input type="text" id="icon-name" class="w-full p-3 bg-gray-800 border border-gray-600 text-white rounded-md text-sm" placeholder="nome do ícone (ex: home)" autocomplete="off">
+                                    <div id="icon-suggestions" class="absolute z-10 w-full bg-gray-800 border border-gray-700 rounded-md mt-1 max-h-40 overflow-y-auto hidden suggestions-scrollbar"></div>
+                                </div>
+                                <textarea id="icon-style" class="w-full p-3 bg-gray-800 border border-gray-600 text-white rounded-md text-sm" rows="2" placeholder="width: 24px;
+height: 24px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aba Lista -->
+                    <div id="content-lista" class="tab-content space-y-4 hidden">
+                        <div>
+                            <label for="lista-layout" class="block text-xs font-medium text-gray-400 mb-2">LAYOUT</label>
+                            <textarea id="lista-layout" rows="5" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="display: flex;
+flex-direction: column;
+gap: 8px;"></textarea>
+                        </div>
+                        <div>
+                            <label for="lista-item-style" class="block text-xs font-medium text-gray-400 mb-2">ESTILO DO ITEM</label>
+                            <textarea id="lista-item-style" rows="3" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="padding: 12px;
+border-radius: 8px;"></textarea>
+                        </div>
+                        <div>
+                            <label for="lista-text" class="block text-xs font-medium text-gray-400 mb-2">TEXTO DO ITEM</label>
+                            <textarea id="lista-text" rows="3" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="font-family: Inter;
+font-size: 14px;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Aba Input -->
+                    <div id="content-input" class="tab-content space-y-4 hidden">
+                        <div>
+                            <label for="input-layout" class="block text-xs font-medium text-gray-400 mb-2">LAYOUT</label>
+                            <textarea id="input-layout" rows="3" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="display: flex;
+width: 100%;"></textarea>
+                        </div>
+                        <div>
+                            <label for="input-style" class="block text-xs font-medium text-gray-400 mb-2">STYLE</label>
+                            <textarea id="input-style" rows="4" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="padding: 12px;
+border: 1px solid var(--border-color);
+border-radius: 8px;
+background: var(--input-bg);"></textarea>
+                        </div>
+                        <div>
+                            <label for="input-placeholder" class="block text-xs font-medium text-gray-400 mb-2">PLACEHOLDER</label>
+                            <input type="text" id="input-placeholder" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="Digite o placeholder...">
+                        </div>
+                    </div>
+
+                    <!-- Aba Tipografia -->
+                    <div id="content-tipografia" class="tab-content space-y-4 hidden">
+                        <div>
+                            <label for="text-content-typo" class="block text-xs font-medium text-gray-400 mb-2">CONTEÚDO</label>
+                            <input type="text" id="text-content-typo" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="Digite o texto...">
+                        </div>
+                        <div>
+                            <label for="text-style" class="block text-xs font-medium text-gray-400 mb-2">TYPOGRAPHY</label>
+                            <textarea id="text-style" rows="5" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="font-family: Inter;
+font-size: 14px;
+font-weight: 500;
+line-height: 20px;
+color: var(--text-color);"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Conversão -->
+                    <div>
+                        <label for="tech-select" class="block text-xs font-medium text-gray-400 mb-1">Converter para:</label>
+                        <select id="tech-select" class="w-full p-2 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm">
+                            <option value="prompt">Prompt para IA</option>
+                            <option value="tailwind">Tailwind CSS</option>
+                            <option value="react-native">React Native (StyleSheet)</option>
+                            <option value="flutter">Flutter (Dart)</option>
+                        </select>
+                    </div>
+                    <button id="convert-btn" class="w-full bg-white text-black font-bold py-2 px-3 rounded-lg hover:bg-gray-200 transition-colors duration-300 text-sm">
+                        Converter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita (Preview e Código) -->
+            <div class="space-y-6">
+                <!-- Preview Visual -->
+                <div>
+                    <h2 class="text-lg font-bold text-white border-b border-gray-700 pb-2 mb-4">Preview Visual</h2>
+                    <div class="bg-gray-900 border border-gray-700 rounded-lg p-8 flex items-center justify-center min-h-[200px]">
+                        <div id="visual-preview">
+                            <p class="text-gray-500 text-sm">Preencha os campos para ver o preview</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Código Gerado -->
+                <div>
+                    <h2 class="text-lg font-bold text-white border-b border-gray-700 pb-2 mb-4">Código Gerado</h2>
+                    <div class="relative">
+                        <pre id="resultado" class="bg-gray-900 text-gray-200 p-4 rounded-lg min-h-[200px] overflow-auto whitespace-pre-wrap word-wrap break-word text-xs"><code>O resultado aparecerá aqui...</code></pre>
+                        <button id="copy-btn" class="absolute top-2 right-2 bg-gray-700 text-white py-1 px-2 rounded-md hover:bg-gray-600 transition-colors text-xs">
+                            Copiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Elemento Toast para notificação -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-gray-200 text-black py-2 px-5 rounded-lg shadow-xl text-sm" style="opacity: 0;">
+        Copiado com sucesso!
+    </div>
+
+    <script>
+        // Elementos do DOM
+        const layoutInput = document.getElementById('layout-input');
+        const styleInput = document.getElementById('style-input');
+        const iconNameInput = document.getElementById('icon-name');
+        const iconSuggestions = document.getElementById('icon-suggestions');
+        const techSelect = document.getElementById('tech-select');
+        const convertBtn = document.getElementById('convert-btn');
+        const resultadoEl = document.querySelector('#resultado code');
+        const copyBtn = document.getElementById('copy-btn');
+        const toastEl = document.getElementById('toast');
+        const visualPreview = document.getElementById('visual-preview');
+
+        let lucideIconNames = [];
+        let iconCache = new Map();
+        let currentTab = 'botao';
+
+        // ===== UTILITÁRIOS DE PARSING =====
+
+        // Parse CSS para objeto
+        function parseCSS(cssText) {
+            const styles = {};
+            const lines = cssText.split(/;|\n/).filter(line => line.trim());
+
+            for (const line of lines) {
+                const [prop, ...valueParts] = line.split(':');
+                if (prop && valueParts.length > 0) {
+                    const property = prop.trim();
+                    const value = valueParts.join(':').trim();
+                    styles[property] = value;
+                }
+            }
+            return styles;
+        }
+
+        // Resolve variáveis CSS para valores (mantém tokens)
+        function resolveCSSVariables(value, keepTokens = false) {
+            const varRegex = /var\(([^,)]+)(?:,\s*([^)]+))?\)/g;
+            if (keepTokens) {
+                return value.replace(varRegex, (match, varName) => {
+                    return varName.trim().replace('--', '');
+                });
+            }
+            return value.replace(varRegex, (match, varName, fallback) => {
+                return fallback ? fallback.trim() : varName.trim();
+            });
+        }
+
+        // Converte unidade px para número
+        function pxToNumber(value) {
+            if (typeof value === 'number') return value;
+            const match = value.match(/^(-?\d+(?:\.\d+)?)px$/);
+            return match ? parseFloat(match[1]) : value;
+        }
+
+        // ===== PREVIEW VISUAL =====
+
+        async function updateVisualPreview() {
+            if (currentTab === 'botao') {
+                const layout = parseCSS(layoutInput.value);
+                const style = parseCSS(styleInput.value);
+                const texto = document.getElementById('text-content').value || 'Button';
+                const textStyle = parseCSS(document.getElementById('text-style-botao').value);
+                const icone = iconNameInput.value;
+
+                // Estilos padrão se não houver nada preenchido
+                const defaultStyles = 'display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 8px; background: #ffffff; color: #000000;';
+
+                let styles = '';
+                const allStyles = {...layout, ...style};
+                if (Object.keys(allStyles).length > 0) {
+                    Object.entries(allStyles).forEach(([prop, value]) => {
+                        const val = resolveCSSVariables(value);
+                        styles += `${prop}: ${val}; `;
+                    });
+                } else {
+                    styles = defaultStyles;
+                }
+
+                let textStyles = '';
+                Object.entries(textStyle).forEach(([prop, value]) => {
+                    const val = resolveCSSVariables(value);
+                    textStyles += `${prop}: ${val}; `;
+                });
+
+                let iconHtml = '';
+                if (icone && lucideIconNames.includes(icone)) {
+                    // Carrega o ícone se não estiver em cache
+                    if (!iconCache.has(icone)) {
+                        await loadIconToCache(icone);
+                    }
+                    iconHtml = iconCache.get(icone) || '';
+                }
+
+                visualPreview.innerHTML = `
+                    <div style="${styles}">
+                        ${iconHtml ? `<span style="display: flex; width: 20px; height: 20px;">${iconHtml}</span>` : ''}
+                        <span style="${textStyles}">${texto}</span>
+                    </div>
+                `;
+            } else if (currentTab === 'lista') {
+                const layout = parseCSS(document.getElementById('lista-layout').value);
+                const itemStyle = parseCSS(document.getElementById('lista-item-style').value);
+                const textStyle = parseCSS(document.getElementById('lista-text').value);
+
+                const defaultContainerStyles = 'display: flex; flex-direction: column; gap: 8px;';
+                const defaultItemStyles = 'padding: 12px; border-radius: 8px; background: #ffffff;';
+
+                let containerStyles = '';
+                if (Object.keys(layout).length > 0) {
+                    Object.entries(layout).forEach(([prop, value]) => {
+                        const val = resolveCSSVariables(value);
+                        containerStyles += `${prop}: ${val}; `;
+                    });
+                } else {
+                    containerStyles = defaultContainerStyles;
+                }
+
+                let itemStyles = '';
+                if (Object.keys(itemStyle).length > 0) {
+                    Object.entries(itemStyle).forEach(([prop, value]) => {
+                        const val = resolveCSSVariables(value);
+                        itemStyles += `${prop}: ${val}; `;
+                    });
+                } else {
+                    itemStyles = defaultItemStyles;
+                }
+
+                let textStyles = '';
+                Object.entries(textStyle).forEach(([prop, value]) => {
+                    const val = resolveCSSVariables(value);
+                    textStyles += `${prop}: ${val}; `;
+                });
+
+                visualPreview.innerHTML = `
+                    <div style="${containerStyles}">
+                        <div style="${itemStyles}"><span style="${textStyles}">Item 1</span></div>
+                        <div style="${itemStyles}"><span style="${textStyles}">Item 2</span></div>
+                        <div style="${itemStyles}"><span style="${textStyles}">Item 3</span></div>
+                    </div>
+                `;
+            } else if (currentTab === 'input') {
+                const layout = parseCSS(document.getElementById('input-layout').value);
+                const style = parseCSS(document.getElementById('input-style').value);
+                const placeholder = document.getElementById('input-placeholder').value || 'Enter text...';
+
+                const defaultStyles = 'display: flex; width: 100%; padding: 12px; border: 1px solid #d4d4d4; border-radius: 8px; background: #ffffff;';
+
+                let styles = '';
+                const allStyles = {...layout, ...style};
+                if (Object.keys(allStyles).length > 0) {
+                    Object.entries(allStyles).forEach(([prop, value]) => {
+                        const val = resolveCSSVariables(value);
+                        styles += `${prop}: ${val}; `;
+                    });
+                } else {
+                    styles = defaultStyles;
+                }
+
+                visualPreview.innerHTML = `
+                    <input type="text" placeholder="${placeholder}" style="${styles}" />
+                `;
+            } else if (currentTab === 'tipografia') {
+                const texto = document.getElementById('text-content-typo').value || 'Texto de exemplo';
+                const typo = parseCSS(document.getElementById('text-style').value);
+
+                const defaultStyles = 'font-family: Inter, sans-serif; font-size: 16px; color: #ffffff;';
+
+                let styles = '';
+                if (Object.keys(typo).length > 0) {
+                    Object.entries(typo).forEach(([prop, value]) => {
+                        const val = resolveCSSVariables(value);
+                        styles += `${prop}: ${val}; `;
+                    });
+                } else {
+                    styles = defaultStyles;
+                }
+
+                visualPreview.innerHTML = `
+                    <span style="${styles}">${texto}</span>
+                `;
+            }
+        }
+
+        // ===== CONVERSORES =====
+
+        // Conversor para Prompt IA
+        function convertToPrompt() {
+            let prompt = '';
+
+            if (currentTab === 'botao') {
+                const layout = parseCSS(layoutInput.value);
+                const style = parseCSS(styleInput.value);
+                const texto = document.getElementById('text-content').value;
+                const textStyle = document.getElementById('text-style-botao').value;
+                const icone = iconNameInput.value;
+                const iconStyle = document.getElementById('icon-style').value;
+
+                prompt = `Crie um componente de botão com as seguintes especificações:\n\n`;
+                prompt += `**Texto:** "${texto}"\n`;
+
+                if (textStyle) {
+                    const textStyleObj = parseCSS(textStyle);
+                    prompt += `**Estilo do Texto:**\n`;
+                    Object.entries(textStyleObj).forEach(([prop, value]) => {
+                        const tokenValue = resolveCSSVariables(value, true);
+                        prompt += `- ${prop}: ${tokenValue}\n`;
+                    });
+                }
+
+                if (icone) {
+                    prompt += `\n**Ícone:** ${icone}\n`;
+                    if (iconStyle) {
+                        const iconStyleObj = parseCSS(iconStyle);
+                        prompt += `**Estilo do Ícone:**\n`;
+                        Object.entries(iconStyleObj).forEach(([prop, value]) => {
+                            const tokenValue = resolveCSSVariables(value, true);
+                            prompt += `- ${prop}: ${tokenValue}\n`;
+                        });
+                    }
+                }
+
+                prompt += `\n**Layout:**\n`;
+                Object.entries(layout).forEach(([prop, value]) => {
+                    const tokenValue = resolveCSSVariables(value, true);
+                    prompt += `- ${prop}: ${tokenValue}\n`;
+                });
+                prompt += `\n**Estilos:**\n`;
+                Object.entries(style).forEach(([prop, value]) => {
+                    const tokenValue = resolveCSSVariables(value, true);
+                    prompt += `- ${prop}: ${tokenValue}\n`;
+                });
+            } else if (currentTab === 'lista') {
+                const layout = parseCSS(document.getElementById('lista-layout').value);
+                const itemStyle = parseCSS(document.getElementById('lista-item-style').value);
+                const textStyle = document.getElementById('lista-text').value;
+
+                prompt = `Crie um componente de lista com as seguintes especificações:\n\n`;
+                prompt += `**Layout da Lista:**\n`;
+                Object.entries(layout).forEach(([prop, value]) => {
+                    const tokenValue = resolveCSSVariables(value, true);
+                    prompt += `- ${prop}: ${tokenValue}\n`;
+                });
+                prompt += `\n**Estilo dos Itens:**\n`;
+                Object.entries(itemStyle).forEach(([prop, value]) => {
+                    const tokenValue = resolveCSSVariables(value, true);
+                    prompt += `- ${prop}: ${tokenValue}\n`;
+                });
+                if (textStyle) {
+                    const textStyleObj = parseCSS(textStyle);
+                    prompt += `\n**Texto do Item:**\n`;
+                    Object.entries(textStyleObj).forEach(([prop, value]) => {
+                        const tokenValue = resolveCSSVariables(value, true);
+                        prompt += `- ${prop}: ${tokenValue}\n`;
+                    });
+                }
+            } else if (currentTab === 'input') {
+                const layout = parseCSS(document.getElementById('input-layout').value);
+                const style = parseCSS(document.getElementById('input-style').value);
+                const placeholder = document.getElementById('input-placeholder').value;
+
+                prompt = `Crie um componente de input com as seguintes especificações:\n\n`;
+                prompt += `**Placeholder:** "${placeholder}"\n`;
+                prompt += `\n**Layout:**\n`;
+                Object.entries(layout).forEach(([prop, value]) => {
+                    const tokenValue = resolveCSSVariables(value, true);
+                    prompt += `- ${prop}: ${tokenValue}\n`;
+                });
+                prompt += `\n**Estilos:**\n`;
+                Object.entries(style).forEach(([prop, value]) => {
+                    const tokenValue = resolveCSSVariables(value, true);
+                    prompt += `- ${prop}: ${tokenValue}\n`;
+                });
+            } else if (currentTab === 'tipografia') {
+                const texto = document.getElementById('text-content-typo').value;
+                const typo = parseCSS(document.getElementById('text-style').value);
+
+                prompt = `Crie um elemento de texto com as seguintes especificações:\n\n`;
+                prompt += `**Conteúdo:** "${texto}"\n`;
+                prompt += `\n**Tipografia:**\n`;
+                Object.entries(typo).forEach(([prop, value]) => {
+                    const tokenValue = resolveCSSVariables(value, true);
+                    prompt += `- ${prop}: ${tokenValue}\n`;
+                });
+            }
+
+            prompt += `\n---\n\nUtilize os tokens de design fornecidos. Não use valores hexadecimais diretos, apenas os nomes dos tokens.`;
+
+            return prompt;
+        }
+
+        // Conversor para Tailwind CSS
+        function convertToTailwind(layout, style, icon) {
+            const layoutStyles = parseCSS(layout);
+            const styleStyles = parseCSS(style);
+            const iconStyles = icon.style ? parseCSS(icon.style) : {};
+
+            const allStyles = { ...layoutStyles, ...styleStyles };
+            const classes = [];
+
+            // Display & Flex
+            if (allStyles.display === 'flex') {
+                classes.push('flex');
+
+                // Flex Direction
+                if (allStyles['flex-direction'] === 'column') classes.push('flex-col');
+                else if (allStyles['flex-direction'] === 'row') classes.push('flex-row');
+
+                // Justify Content
+                const justifyMap = {
+                    'center': 'justify-center',
+                    'flex-start': 'justify-start',
+                    'flex-end': 'justify-end',
+                    'space-between': 'justify-between',
+                    'space-around': 'justify-around',
+                };
+                if (allStyles['justify-content']) {
+                    classes.push(justifyMap[allStyles['justify-content']] || '');
+                }
+
+                // Align Items
+                const alignMap = {
+                    'center': 'items-center',
+                    'flex-start': 'items-start',
+                    'flex-end': 'items-end',
+                    'stretch': 'items-stretch',
+                };
+                if (allStyles['align-items']) {
+                    classes.push(alignMap[allStyles['align-items']] || '');
+                }
+
+                // Gap
+                if (allStyles.gap) {
+                    const gapValue = pxToNumber(allStyles.gap);
+                    const gapClass = gapValue / 4;
+                    classes.push(`gap-${gapClass}`);
+                }
+            }
+
+            // Padding
+            if (allStyles.padding) {
+                const padValue = pxToNumber(allStyles.padding);
+                const padClass = padValue / 4;
+                classes.push(`p-${padClass}`);
+            }
+
+            // Border Radius
+            if (allStyles['border-radius']) {
+                const radiusValue = resolveCSSVariables(allStyles['border-radius']);
+                const radius = pxToNumber(radiusValue);
+                if (radius === 9999 || radius > 100) classes.push('rounded-full');
+                else {
+                    const radiusClass = radius / 4;
+                    classes.push(`rounded-${radiusClass > 0 ? radiusClass : 'none'}`);
+                }
+            }
+
+            // Border
+            if (allStyles.border) {
+                const borderValue = resolveCSSVariables(allStyles.border);
+                classes.push('border');
+                // Extrai cor se houver
+                const colorMatch = borderValue.match(/#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}/);
+                if (colorMatch) {
+                    classes.push(`border-[${colorMatch[0]}]`);
+                }
+            }
+
+            // Background Color
+            if (allStyles['background-color']) {
+                const bgColor = resolveCSSVariables(allStyles['background-color']);
+                classes.push(`bg-[${bgColor}]`);
+            }
+
+            // Width & Height
+            if (allStyles.width) {
+                const w = resolveCSSVariables(allStyles.width);
+                classes.push(`w-[${w}]`);
+            }
+            if (allStyles.height) {
+                const h = resolveCSSVariables(allStyles.height);
+                classes.push(`h-[${h}]`);
+            }
+
+            const containerClasses = classes.filter(c => c).join(' ');
+
+            // Gera código do componente
+            let code = `// Componente Tailwind CSS\n`;
+            code += `<div className="${containerClasses}">\n`;
+
+            if (icon.name) {
+                const iconClasses = [];
+                if (iconStyles.width) iconClasses.push(`w-[${resolveCSSVariables(iconStyles.width)}]`);
+                if (iconStyles.height) iconClasses.push(`h-[${resolveCSSVariables(iconStyles.height)}]`);
+
+                code += `  {/* Ícone: ${icon.name} */}\n`;
+                code += `  <Icon name="${icon.name}" className="${iconClasses.join(' ')}" />\n`;
+            }
+
+            code += `</div>`;
+
+            return code;
+        }
+
+        // Conversor para React Native
+        function convertToReactNative(layout, style, icon) {
+            const layoutStyles = parseCSS(layout);
+            const styleStyles = parseCSS(style);
+            const iconStyles = icon.style ? parseCSS(icon.style) : {};
+
+            const allStyles = { ...layoutStyles, ...styleStyles };
+            const rnStyles = {};
+
+            // Display Flex (padrão no RN)
+            if (allStyles.display === 'flex' || !allStyles.display) {
+                if (allStyles['flex-direction']) {
+                    rnStyles.flexDirection = allStyles['flex-direction'];
+                }
+                if (allStyles['justify-content']) {
+                    rnStyles.justifyContent = allStyles['justify-content'];
+                }
+                if (allStyles['align-items']) {
+                    rnStyles.alignItems = allStyles['align-items'];
+                }
+                if (allStyles.gap) {
+                    rnStyles.gap = pxToNumber(allStyles.gap);
+                }
+            }
+
+            // Padding
+            if (allStyles.padding) {
+                rnStyles.padding = pxToNumber(allStyles.padding);
+            }
+
+            // Border
+            if (allStyles['border-radius']) {
+                const radiusValue = resolveCSSVariables(allStyles['border-radius']);
+                rnStyles.borderRadius = pxToNumber(radiusValue);
+            }
+            if (allStyles.border) {
+                const borderValue = resolveCSSVariables(allStyles.border);
+                const widthMatch = borderValue.match(/(\d+)px/);
+                if (widthMatch) {
+                    rnStyles.borderWidth = parseInt(widthMatch[1]);
+                }
+                const colorMatch = borderValue.match(/#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}/);
+                if (colorMatch) {
+                    rnStyles.borderColor = colorMatch[0];
+                }
+            }
+
+            // Background
+            if (allStyles['background-color']) {
+                const bgColor = resolveCSSVariables(allStyles['background-color']);
+                rnStyles.backgroundColor = bgColor;
+            }
+
+            // Width & Height
+            if (allStyles.width) {
+                const w = resolveCSSVariables(allStyles.width);
+                rnStyles.width = pxToNumber(w);
+            }
+            if (allStyles.height) {
+                const h = resolveCSSVariables(allStyles.height);
+                rnStyles.height = pxToNumber(h);
+            }
+
+            // Estilos do ícone
+            const iconRNStyles = {};
+            if (iconStyles.width) {
+                iconRNStyles.width = pxToNumber(resolveCSSVariables(iconStyles.width));
+            }
+            if (iconStyles.height) {
+                iconRNStyles.height = pxToNumber(resolveCSSVariables(iconStyles.height));
+            }
+
+            // Gera código
+            let code = `// Componente React Native\n`;
+            code += `import { View } from 'react-native';\n`;
+            if (icon.name) {
+                code += `import { ${toPascalCase(icon.name)} } from 'lucide-react-native';\n`;
+            }
+            code += `\n`;
+            code += `const styles = StyleSheet.create({\n`;
+            code += `  container: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
+            if (icon.name && Object.keys(iconRNStyles).length > 0) {
+                code += `  icon: ${JSON.stringify(iconRNStyles, null, 4).replace(/"/g, "'")},\n`;
+            }
+            code += `});\n\n`;
+            code += `<View style={styles.container}>\n`;
+            if (icon.name) {
+                code += `  <${toPascalCase(icon.name)} ${Object.keys(iconRNStyles).length > 0 ? 'style={styles.icon}' : ''} />\n`;
+            }
+            code += `</View>`;
+
+            return code;
+        }
+
+        // Conversor para Flutter
+        function convertToFlutter(layout, style, icon) {
+            const layoutStyles = parseCSS(layout);
+            const styleStyles = parseCSS(style);
+            const iconStyles = icon.style ? parseCSS(icon.style) : {};
+
+            const allStyles = { ...layoutStyles, ...styleStyles };
+
+            let code = `// Widget Flutter\n`;
+
+            // Container com decoração
+            const hasDecoration = allStyles['border-radius'] || allStyles.border || allStyles['background-color'];
+
+            if (hasDecoration) {
+                code += `Container(\n`;
+
+                // Padding
+                if (allStyles.padding) {
+                    const pad = pxToNumber(allStyles.padding);
+                    code += `  padding: EdgeInsets.all(${pad}),\n`;
+                }
+
+                // Width & Height
+                if (allStyles.width) {
+                    const w = pxToNumber(resolveCSSVariables(allStyles.width));
+                    code += `  width: ${w},\n`;
+                }
+                if (allStyles.height) {
+                    const h = pxToNumber(resolveCSSVariables(allStyles.height));
+                    code += `  height: ${h},\n`;
+                }
+
+                // Decoration
+                code += `  decoration: BoxDecoration(\n`;
+
+                if (allStyles['background-color']) {
+                    const bgColor = resolveCSSVariables(allStyles['background-color']);
+                    code += `    color: Color(0xFF${bgColor.replace('#', '')}),\n`;
+                }
+
+                if (allStyles['border-radius']) {
+                    const radius = pxToNumber(resolveCSSVariables(allStyles['border-radius']));
+                    code += `    borderRadius: BorderRadius.circular(${radius}),\n`;
+                }
+
+                if (allStyles.border) {
+                    const borderValue = resolveCSSVariables(allStyles.border);
+                    const widthMatch = borderValue.match(/(\d+)px/);
+                    const colorMatch = borderValue.match(/#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}/);
+                    const width = widthMatch ? widthMatch[1] : '1';
+                    const color = colorMatch ? colorMatch[0].replace('#', '') : 'D4D4D4';
+                    code += `    border: Border.all(\n`;
+                    code += `      color: Color(0xFF${color}),\n`;
+                    code += `      width: ${width},\n`;
+                    code += `    ),\n`;
+                }
+
+                code += `  ),\n`;
+            }
+
+            // Child (Row/Column para flex)
+            if (allStyles.display === 'flex') {
+                const isColumn = allStyles['flex-direction'] === 'column';
+                const widget = isColumn ? 'Column' : 'Row';
+
+                code += `  child: ${widget}(\n`;
+
+                // MainAxisAlignment (justify-content)
+                if (allStyles['justify-content']) {
+                    const justifyMap = {
+                        'center': 'MainAxisAlignment.center',
+                        'flex-start': 'MainAxisAlignment.start',
+                        'flex-end': 'MainAxisAlignment.end',
+                        'space-between': 'MainAxisAlignment.spaceBetween',
+                        'space-around': 'MainAxisAlignment.spaceAround',
+                    };
+                    code += `    mainAxisAlignment: ${justifyMap[allStyles['justify-content']] || 'MainAxisAlignment.start'},\n`;
+                }
+
+                // CrossAxisAlignment (align-items)
+                if (allStyles['align-items']) {
+                    const alignMap = {
+                        'center': 'CrossAxisAlignment.center',
+                        'flex-start': 'CrossAxisAlignment.start',
+                        'flex-end': 'CrossAxisAlignment.end',
+                        'stretch': 'CrossAxisAlignment.stretch',
+                    };
+                    code += `    crossAxisAlignment: ${alignMap[allStyles['align-items']] || 'CrossAxisAlignment.start'},\n`;
+                }
+
+                code += `    children: [\n`;
+
+                if (icon.name) {
+                    const iconSize = iconStyles.width ? pxToNumber(resolveCSSVariables(iconStyles.width)) : 24;
+                    code += `      Icon(\n`;
+                    code += `        Icons.${icon.name.replace(/-/g, '_')},\n`;
+                    code += `        size: ${iconSize},\n`;
+                    code += `      ),\n`;
+                }
+
+                code += `    ],\n`;
+                code += `  ),\n`;
+            }
+
+            code += `)`;
+
+            return code;
+        }
+
+        // Converte kebab-case para PascalCase
+        function toPascalCase(str) {
+            return str.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
+        }
+
+        // ===== BUSCA E CACHE DE ÍCONES =====
+
+        async function fetchLucideIcons() {
+            try {
+                const response = await fetch('https://unpkg.com/lucide-static@latest/tags.json');
+                if (!response.ok) throw new Error('Falha ao buscar lista de ícones');
+                const data = await response.json();
+                lucideIconNames = Object.keys(data);
+                console.log(`${lucideIconNames.length} ícones carregados com sucesso`);
+            } catch (error) {
+                console.error('Erro ao buscar ícones:', error);
+                showToast('Erro ao carregar ícones', true);
+            }
+        }
+
+        async function loadIconToCache(name) {
+            if (!name || iconCache.has(name)) return;
+
+            try {
+                const response = await fetch(`https://unpkg.com/lucide-static/icons/${name}.svg`);
+                if (!response.ok) return;
+                let svgText = await response.text();
+                svgText = svgText.replace('<svg', '<svg width="100%" height="100%" stroke="currentColor"');
+                iconCache.set(name, svgText);
+            } catch (error) {
+                console.error('Erro ao buscar ícone:', error);
+            }
+        }
+
+        // ===== EVENT LISTENERS =====
+
+        // Autocomplete com debounce
+        let debounceTimer;
+        iconNameInput.addEventListener('input', () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                const query = iconNameInput.value.toLowerCase();
+                iconSuggestions.innerHTML = '';
+                if (query.length < 1) {
+                    iconSuggestions.classList.add('hidden');
+                    return;
+                }
+
+                const filteredIcons = lucideIconNames.filter(name => name.startsWith(query)).slice(0, 50);
+
+                if (filteredIcons.length > 0) {
+                    const fragment = document.createDocumentFragment();
+                    filteredIcons.forEach(name => {
+                        const suggestionItem = document.createElement('div');
+                        suggestionItem.textContent = name;
+                        suggestionItem.className = 'p-2 cursor-pointer hover:bg-gray-700';
+                        suggestionItem.addEventListener('click', async () => {
+                            iconNameInput.value = name;
+                            iconSuggestions.classList.add('hidden');
+                            await loadIconToCache(name);
+                            await updateVisualPreview();
+                        });
+                        fragment.appendChild(suggestionItem);
+                    });
+                    iconSuggestions.appendChild(fragment);
+                    iconSuggestions.classList.remove('hidden');
+                } else {
+                    iconSuggestions.classList.add('hidden');
+                }
+            }, 150);
+        });
+
+        iconNameInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                if (!iconSuggestions.matches(':hover')) {
+                    iconSuggestions.classList.add('hidden');
+                    updateIconPreview(iconNameInput.value);
+                }
+            }, 200);
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!iconNameInput.parentElement.contains(event.target)) {
+                iconSuggestions.classList.add('hidden');
+            }
+        });
+
+        // ===== SISTEMA DE ABAS =====
+        function switchTab(tabName) {
+            // Atualiza currentTab
+            currentTab = tabName;
+
+            // Remove active de todos os botões
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-black');
+                btn.classList.add('bg-gray-800', 'text-gray-400');
+            });
+
+            // Adiciona active no botão clicado
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.classList.add('bg-white', 'text-black');
+            activeBtn.classList.remove('bg-gray-800', 'text-gray-400');
+
+            // Esconde todos os conteúdos
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Mostra o conteúdo ativo
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+
+            // Atualiza preview
+            updateVisualPreview();
+        }
+
+        // Event listeners das abas
+        document.getElementById('tab-botao').addEventListener('click', () => switchTab('botao'));
+        document.getElementById('tab-lista').addEventListener('click', () => switchTab('lista'));
+        document.getElementById('tab-input').addEventListener('click', () => switchTab('input'));
+        document.getElementById('tab-tipografia').addEventListener('click', () => switchTab('tipografia'));
+
+        // Conversão
+        convertBtn.addEventListener('click', () => {
+            try {
+                const tech = techSelect.value;
+                let result = '';
+
+                if (tech === 'prompt') {
+                    result = convertToPrompt();
+                } else {
+                    const inputs = {
+                        layout: layoutInput.value,
+                        style: styleInput.value,
+                        icon: {
+                            name: iconNameInput.value,
+                            style: '',
+                        }
+                    };
+
+                    switch(tech) {
+                        case 'tailwind':
+                            result = convertToTailwind(inputs.layout, inputs.style, inputs.icon);
+                            break;
+                        case 'react-native':
+                            result = convertToReactNative(inputs.layout, inputs.style, inputs.icon);
+                            break;
+                        case 'flutter':
+                            result = convertToFlutter(inputs.layout, inputs.style, inputs.icon);
+                            break;
+                        default:
+                            result = '// Tecnologia não suportada';
+                    }
+                }
+
+                resultadoEl.textContent = result;
+            } catch (error) {
+                console.error('Erro na conversão:', error);
+                showToast('Erro ao converter código', true);
+                resultadoEl.textContent = `// Erro: ${error.message}`;
+            }
+        });
+
+        // Clipboard moderno
+        copyBtn.addEventListener('click', async () => {
+            try {
+                const textoParaCopiar = resultadoEl.textContent;
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(textoParaCopiar);
+                    showToast('Copiado com sucesso!');
+                } else {
+                    // Fallback para navegadores antigos
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textoParaCopiar;
+                    textArea.style.position = 'fixed';
+                    textArea.style.opacity = '0';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast('Copiado com sucesso!');
+                }
+            } catch (error) {
+                console.error('Erro ao copiar:', error);
+                showToast('Erro ao copiar texto', true);
+            }
+        });
+
+        // Toast melhorado
+        function showToast(message, isError = false) {
+            toastEl.textContent = message;
+            toastEl.className = `fixed bottom-5 right-5 py-2 px-5 rounded-lg shadow-xl text-sm ${
+                isError ? 'bg-red-500 text-white' : 'bg-gray-200 text-black'
+            }`;
+            toastEl.classList.add('toast-animation');
+            setTimeout(() => {
+                toastEl.classList.remove('toast-animation');
+            }, 3000);
+        }
+
+        // ===== EVENT LISTENERS PARA PREVIEW EM TEMPO REAL =====
+
+        // Botão
+        layoutInput.addEventListener('input', updateVisualPreview);
+        styleInput.addEventListener('input', updateVisualPreview);
+        document.getElementById('text-content').addEventListener('input', updateVisualPreview);
+        document.getElementById('text-style-botao').addEventListener('input', updateVisualPreview);
+
+        let iconDebounceTimer;
+        iconNameInput.addEventListener('input', () => {
+            clearTimeout(iconDebounceTimer);
+            iconDebounceTimer = setTimeout(async () => {
+                await updateVisualPreview();
+            }, 300); // delay para carregar ícone
+        });
+
+        // Lista
+        document.getElementById('lista-layout').addEventListener('input', updateVisualPreview);
+        document.getElementById('lista-item-style').addEventListener('input', updateVisualPreview);
+        document.getElementById('lista-text').addEventListener('input', updateVisualPreview);
+
+        // Input
+        document.getElementById('input-layout').addEventListener('input', updateVisualPreview);
+        document.getElementById('input-style').addEventListener('input', updateVisualPreview);
+        document.getElementById('input-placeholder').addEventListener('input', updateVisualPreview);
+
+        // Tipografia
+        document.getElementById('text-content-typo').addEventListener('input', updateVisualPreview);
+        document.getElementById('text-style').addEventListener('input', updateVisualPreview);
+
+        // Inicialização
+        fetchLucideIcons();
+        updateVisualPreview();
+    </script>
+
+</body>
+</html>
+
