@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversor de Código Figma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        * {
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
         /* Estilo para a animação do toast */
         @keyframes fadeInOut {
             0%, 100% { opacity: 0; transform: translateY(20px); }
@@ -19,37 +26,37 @@
             width: 6px;
         }
         .suggestions-scrollbar::-webkit-scrollbar-track {
-            background: #2d3748; /* cinza escuro */
+            background: #262624;
         }
         .suggestions-scrollbar::-webkit-scrollbar-thumb {
-            background: #718096; /* cinza mais claro */
+            background: #3a3a38;
             border-radius: 3px;
         }
         .suggestions-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #a0aec0; /* cinza hover */
+            background: #4a4a48;
         }
     </style>
 </head>
-<body class="bg-black text-gray-300 font-sans text-sm">
+<body class="text-gray-300 text-sm" style="background-color: #262624;">
 
     <div class="p-4 md:p-12">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Coluna da Esquerda (Entradas) -->
             <div>
-                <h2 class="text-lg font-bold text-white border-b border-gray-700 pb-2 mb-4">Figma Dev Mode</h2>
+                <h2 class="text-lg font-bold text-white pb-2 mb-4">Figma Dev Mode</h2>
 
                 <!-- Abas -->
                 <div class="flex gap-2 mb-4">
                     <button id="tab-botao" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-black">
                         Botão
                     </button>
-                    <button id="tab-lista" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-800 text-gray-400 hover:bg-gray-700">
+                    <button id="tab-lista" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
                         Lista
                     </button>
-                    <button id="tab-input" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-800 text-gray-400 hover:bg-gray-700">
+                    <button id="tab-input" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
                         Input
                     </button>
-                    <button id="tab-tipografia" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-gray-800 text-gray-400 hover:bg-gray-700">
+                    <button id="tab-tipografia" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
                         Tipografia
                     </button>
                 </div>
@@ -58,101 +65,66 @@
                 <div class="space-y-6">
                     <!-- Aba Botão -->
                     <div id="content-botao" class="tab-content space-y-4">
-                        <div>
-                            <label for="layout-input" class="block text-xs font-medium text-gray-400 mb-2">LAYOUT DO BOTÃO</label>
-                            <textarea id="layout-input" rows="5" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="display: flex;
-padding: 16px;
-justify-content: center;
-align-items: center;
-gap: 8px;"></textarea>
-                        </div>
-                        <div>
-                            <label for="style-input" class="block text-xs font-medium text-gray-400 mb-2">ESTILO DO BOTÃO</label>
-                            <textarea id="style-input" rows="3" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="border-radius: 44px;
-border: 1px solid var(--Aux-2, #D4D4D4);"></textarea>
-                        </div>
-                        <div>
-                            <label for="text-content" class="block text-xs font-medium text-gray-400 mb-2">TEXTO DO BOTÃO</label>
-                            <input type="text" id="text-content" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm mb-2" placeholder="Digite o texto...">
-                            <label class="block text-xs font-medium text-gray-400 mb-2 mt-2">TIPOGRAFIA DO TEXTO</label>
-                            <textarea id="text-style-botao" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" rows="3" placeholder="font-family: Inter;
-font-size: 14px;
-font-weight: 500;"></textarea>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">ÍCONE (OPCIONAL)</label>
-                            <div class="space-y-2">
-                                <div class="relative">
-                                    <input type="text" id="icon-name" class="w-full p-3 bg-gray-800 border border-gray-600 text-white rounded-md text-sm" placeholder="nome do ícone (ex: home)" autocomplete="off">
-                                    <div id="icon-suggestions" class="absolute z-10 w-full bg-gray-800 border border-gray-700 rounded-md mt-1 max-h-40 overflow-y-auto hidden suggestions-scrollbar"></div>
+                        <textarea id="layout-input" rows="5" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="LAYOUT DO BOTÃO"></textarea>
+
+                        <textarea id="style-input" rows="3" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="ESTILO DO BOTÃO"></textarea>
+
+                        <!-- Elementos do Botão -->
+                        <div class="rounded-lg p-3" style="border: 1px solid #3a3a38;">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs font-medium text-gray-400">ELEMENTOS</span>
+                                <div class="flex gap-2">
+                                    <button id="add-text-btn" class="text-xs px-2 py-1 text-white rounded transition-colors" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">+ Texto</button>
+                                    <button id="add-icon-btn" class="text-xs px-2 py-1 text-white rounded transition-colors" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">+ Ícone</button>
                                 </div>
-                                <label class="block text-xs font-medium text-gray-400 mb-2">ESTILO DO ÍCONE</label>
-                                <textarea id="icon-style" class="w-full p-3 bg-gray-800 border border-gray-600 text-white rounded-md text-sm" rows="2" placeholder="width: 24px;
-height: 24px;"></textarea>
+                            </div>
+                            <div id="botao-elementos" class="space-y-2">
+                                <!-- Elementos serão adicionados aqui -->
                             </div>
                         </div>
                     </div>
 
                     <!-- Aba Lista -->
                     <div id="content-lista" class="tab-content space-y-4 hidden">
-                        <div>
-                            <label for="lista-layout" class="block text-xs font-medium text-gray-400 mb-2">LAYOUT DA LISTA</label>
-                            <textarea id="lista-layout" rows="5" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="display: flex;
-flex-direction: column;
-gap: 8px;"></textarea>
-                        </div>
-                        <div>
-                            <label for="lista-item-style" class="block text-xs font-medium text-gray-400 mb-2">ESTILO DOS ITENS</label>
-                            <textarea id="lista-item-style" rows="3" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="padding: 12px;
-border-radius: 8px;"></textarea>
-                        </div>
-                        <div>
-                            <label for="lista-text" class="block text-xs font-medium text-gray-400 mb-2">TIPOGRAFIA DOS ITENS</label>
-                            <textarea id="lista-text" rows="3" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="font-family: Inter;
-font-size: 14px;"></textarea>
+                        <textarea id="lista-layout" rows="5" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="LAYOUT DA LISTA"></textarea>
+
+                        <textarea id="lista-item-style" rows="3" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="ESTILO DOS ITENS"></textarea>
+
+                        <!-- Elementos da Lista -->
+                        <div class="rounded-lg p-3" style="border: 1px solid #3a3a38;">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-xs font-medium text-gray-400">ELEMENTOS DO ITEM</span>
+                                <div class="flex gap-2">
+                                    <button id="add-lista-text-btn" class="text-xs px-2 py-1 text-white rounded transition-colors" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">+ Texto</button>
+                                    <button id="add-lista-icon-btn" class="text-xs px-2 py-1 text-white rounded transition-colors" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">+ Ícone</button>
+                                </div>
+                            </div>
+                            <div id="lista-elementos" class="space-y-2">
+                                <!-- Elementos serão adicionados aqui -->
+                            </div>
                         </div>
                     </div>
 
                     <!-- Aba Input -->
                     <div id="content-input" class="tab-content space-y-4 hidden">
-                        <div>
-                            <label for="input-layout" class="block text-xs font-medium text-gray-400 mb-2">LAYOUT</label>
-                            <textarea id="input-layout" rows="3" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="display: flex;
-width: 100%;"></textarea>
-                        </div>
-                        <div>
-                            <label for="input-style" class="block text-xs font-medium text-gray-400 mb-2">STYLE</label>
-                            <textarea id="input-style" rows="4" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="padding: 12px;
-border: 1px solid var(--border-color);
-border-radius: 8px;
-background: var(--input-bg);"></textarea>
-                        </div>
-                        <div>
-                            <label for="input-placeholder" class="block text-xs font-medium text-gray-400 mb-2">PLACEHOLDER</label>
-                            <input type="text" id="input-placeholder" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="Digite o placeholder...">
-                        </div>
+                        <textarea id="input-layout" rows="3" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="LAYOUT DO INPUT"></textarea>
+
+                        <textarea id="input-style" rows="4" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="ESTILO DO INPUT"></textarea>
+
+                        <input type="text" id="input-placeholder" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="PLACEHOLDER DO INPUT">
                     </div>
 
                     <!-- Aba Tipografia -->
                     <div id="content-tipografia" class="tab-content space-y-4 hidden">
-                        <div>
-                            <label for="text-content-typo" class="block text-xs font-medium text-gray-400 mb-2">CONTEÚDO</label>
-                            <input type="text" id="text-content-typo" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="Digite o texto...">
-                        </div>
-                        <div>
-                            <label for="text-style" class="block text-xs font-medium text-gray-400 mb-2">TYPOGRAPHY</label>
-                            <textarea id="text-style" rows="5" class="w-full p-3 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm" placeholder="font-family: Inter;
-font-size: 14px;
-font-weight: 500;
-line-height: 20px;
-color: var(--text-color);"></textarea>
-                        </div>
+                        <input type="text" id="text-content-typo" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="CONTEÚDO DO TEXTO">
+
+                        <textarea id="text-style" rows="5" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="TIPOGRAFIA"></textarea>
                     </div>
 
                     <!-- Conversão -->
                     <div>
                         <label for="tech-select" class="block text-xs font-medium text-gray-400 mb-1">Converter para:</label>
-                        <select id="tech-select" class="w-full p-2 bg-gray-800 border border-gray-700 text-white rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition text-sm">
+                        <select id="tech-select" class="w-full p-2 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
                             <option value="prompt">Prompt para IA</option>
                             <option value="tailwind">Tailwind CSS</option>
                             <option value="react-native">React Native (StyleSheet)</option>
@@ -169,8 +141,8 @@ color: var(--text-color);"></textarea>
             <div class="space-y-6">
                 <!-- Preview Visual -->
                 <div>
-                    <h2 class="text-lg font-bold text-white border-b border-gray-700 pb-2 mb-4">Preview Visual</h2>
-                    <div class="bg-gray-900 border border-gray-700 rounded-lg p-8 flex items-center justify-center min-h-[200px]">
+                    <h2 class="text-lg font-bold text-white pb-2 mb-4">Preview Visual</h2>
+                    <div class="rounded-lg p-8 flex items-center justify-center min-h-[200px]" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
                         <div id="visual-preview">
                             <p class="text-gray-500 text-sm">Preencha os campos para ver o preview</p>
                         </div>
@@ -179,10 +151,10 @@ color: var(--text-color);"></textarea>
 
                 <!-- Código Gerado -->
                 <div>
-                    <h2 class="text-lg font-bold text-white border-b border-gray-700 pb-2 mb-4">Código Gerado</h2>
+                    <h2 class="text-lg font-bold text-white pb-2 mb-4">Código Gerado</h2>
                     <div class="relative">
-                        <pre id="resultado" class="bg-gray-900 text-gray-200 p-4 rounded-lg min-h-[200px] overflow-auto whitespace-pre-wrap word-wrap break-word text-xs"><code>O resultado aparecerá aqui...</code></pre>
-                        <button id="copy-btn" class="absolute top-2 right-2 bg-gray-700 text-white py-1 px-2 rounded-md hover:bg-gray-600 transition-colors text-xs">
+                        <pre id="resultado" class="text-gray-200 p-4 rounded-lg min-h-[200px] overflow-auto whitespace-pre-wrap word-wrap break-word text-xs" style="background-color: #1a1a18;"><code>O resultado aparecerá aqui...</code></pre>
+                        <button id="copy-btn" class="absolute top-2 right-2 text-white py-1 px-2 rounded-md transition-colors text-xs" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">
                             Copiar
                         </button>
                     </div>
@@ -192,7 +164,7 @@ color: var(--text-color);"></textarea>
     </div>
     
     <!-- Elemento Toast para notificação -->
-    <div id="toast" class="fixed bottom-5 right-5 bg-gray-200 text-black py-2 px-5 rounded-lg shadow-xl text-sm" style="opacity: 0;">
+    <div id="toast" class="fixed bottom-5 right-5 py-2 px-5 rounded-lg shadow-xl text-sm" style="opacity: 0; background-color: #3a3a38; color: #ffffff;">
         Copiado com sucesso!
     </div>
 
@@ -974,13 +946,15 @@ color: var(--text-color);"></textarea>
             // Remove active de todos os botões
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('bg-white', 'text-black');
-                btn.classList.add('bg-gray-800', 'text-gray-400');
+                btn.classList.add('text-gray-400');
+                btn.style.backgroundColor = '#1a1a18';
             });
 
             // Adiciona active no botão clicado
             const activeBtn = document.getElementById(`tab-${tabName}`);
             activeBtn.classList.add('bg-white', 'text-black');
-            activeBtn.classList.remove('bg-gray-800', 'text-gray-400');
+            activeBtn.classList.remove('text-gray-400');
+            activeBtn.style.backgroundColor = '';
 
             // Esconde todos os conteúdos
             document.querySelectorAll('.tab-content').forEach(content => {
@@ -1095,9 +1069,14 @@ color: var(--text-color);"></textarea>
         // Toast melhorado
         function showToast(message, isError = false) {
             toastEl.textContent = message;
-            toastEl.className = `fixed bottom-5 right-5 py-2 px-5 rounded-lg shadow-xl text-sm ${
-                isError ? 'bg-red-500 text-white' : 'bg-gray-200 text-black'
-            }`;
+            toastEl.className = 'fixed bottom-5 right-5 py-2 px-5 rounded-lg shadow-xl text-sm';
+            if (isError) {
+                toastEl.style.backgroundColor = '#dc2626';
+                toastEl.style.color = '#ffffff';
+            } else {
+                toastEl.style.backgroundColor = '#3a3a38';
+                toastEl.style.color = '#ffffff';
+            }
             toastEl.classList.add('toast-animation');
             setTimeout(() => {
                 toastEl.classList.remove('toast-animation');
@@ -1133,6 +1112,87 @@ color: var(--text-color);"></textarea>
         // Tipografia
         document.getElementById('text-content-typo').addEventListener('input', updateVisualPreview);
         document.getElementById('text-style').addEventListener('input', updateVisualPreview);
+
+        // ===== SISTEMA DE ELEMENTOS DINÂMICOS =====
+
+        let botaoElementosCount = 0;
+        let listaElementosCount = 0;
+
+        // Adicionar Texto ao Botão
+        document.getElementById('add-text-btn').addEventListener('click', () => {
+            botaoElementosCount++;
+            const id = `botao-text-${botaoElementosCount}`;
+            const elemento = document.createElement('div');
+            elemento.className = 'rounded p-2 space-y-2';
+            elemento.style.border = '1px solid #3a3a38';
+            elemento.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="text-xs text-gray-400">Texto</span>
+                    <button onclick="this.parentElement.parentElement.remove(); updateVisualPreview();" class="text-xs text-red-400 hover:text-red-300">Remover</button>
+                </div>
+                <input type="text" id="${id}-content" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="CONTEÚDO" oninput="updateVisualPreview()">
+                <textarea id="${id}-style" rows="2" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="TIPOGRAFIA" oninput="updateVisualPreview()"></textarea>
+            `;
+            document.getElementById('botao-elementos').appendChild(elemento);
+            updateVisualPreview();
+        });
+
+        // Adicionar Ícone ao Botão
+        document.getElementById('add-icon-btn').addEventListener('click', () => {
+            botaoElementosCount++;
+            const id = `botao-icon-${botaoElementosCount}`;
+            const elemento = document.createElement('div');
+            elemento.className = 'rounded p-2 space-y-2';
+            elemento.style.border = '1px solid #3a3a38';
+            elemento.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="text-xs text-gray-400">Ícone</span>
+                    <button onclick="this.parentElement.parentElement.remove(); updateVisualPreview();" class="text-xs text-red-400 hover:text-red-300">Remover</button>
+                </div>
+                <input type="text" id="${id}-name" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="NOME DO ÍCONE" oninput="updateVisualPreview()">
+                <textarea id="${id}-style" rows="2" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="ESTILO" oninput="updateVisualPreview()"></textarea>
+            `;
+            document.getElementById('botao-elementos').appendChild(elemento);
+            updateVisualPreview();
+        });
+
+        // Adicionar Texto à Lista
+        document.getElementById('add-lista-text-btn').addEventListener('click', () => {
+            listaElementosCount++;
+            const id = `lista-text-${listaElementosCount}`;
+            const elemento = document.createElement('div');
+            elemento.className = 'rounded p-2 space-y-2';
+            elemento.style.border = '1px solid #3a3a38';
+            elemento.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="text-xs text-gray-400">Texto</span>
+                    <button onclick="this.parentElement.parentElement.remove(); updateVisualPreview();" class="text-xs text-red-400 hover:text-red-300">Remover</button>
+                </div>
+                <input type="text" id="${id}-content" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="CONTEÚDO" oninput="updateVisualPreview()">
+                <textarea id="${id}-style" rows="2" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="TIPOGRAFIA" oninput="updateVisualPreview()"></textarea>
+            `;
+            document.getElementById('lista-elementos').appendChild(elemento);
+            updateVisualPreview();
+        });
+
+        // Adicionar Ícone à Lista
+        document.getElementById('add-lista-icon-btn').addEventListener('click', () => {
+            listaElementosCount++;
+            const id = `lista-icon-${listaElementosCount}`;
+            const elemento = document.createElement('div');
+            elemento.className = 'rounded p-2 space-y-2';
+            elemento.style.border = '1px solid #3a3a38';
+            elemento.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <span class="text-xs text-gray-400">Ícone</span>
+                    <button onclick="this.parentElement.parentElement.remove(); updateVisualPreview();" class="text-xs text-red-400 hover:text-red-300">Remover</button>
+                </div>
+                <input type="text" id="${id}-name" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="NOME DO ÍCONE" oninput="updateVisualPreview()">
+                <textarea id="${id}-style" rows="2" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="ESTILO" oninput="updateVisualPreview()"></textarea>
+            `;
+            document.getElementById('lista-elementos').appendChild(elemento);
+            updateVisualPreview();
+        });
 
         // Inicialização
         fetchLucideIcons();
