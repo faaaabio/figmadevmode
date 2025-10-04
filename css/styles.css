@@ -1,0 +1,27 @@
+* {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Estilo para a animação do toast */
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; transform: translateY(20px); }
+    10%, 90% { opacity: 1; transform: translateY(0); }
+}
+.toast-animation {
+    animation: fadeInOut 3s ease-in-out forwards;
+}
+
+/* Scrollbar customizada para a lista de ícones */
+.suggestions-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.suggestions-scrollbar::-webkit-scrollbar-track {
+    background: #262624;
+}
+.suggestions-scrollbar::-webkit-scrollbar-thumb {
+    background: #3a3a38;
+    border-radius: 3px;
+}
+.suggestions-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #4a4a48;
+}
