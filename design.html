@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design System Converter</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="text-gray-300 text-sm" style="background-color: #262624;">
+
+    <div class="p-4 md:p-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Coluna da Esquerda (Entradas) -->
+            <div>
+                <h2 class="text-lg font-bold text-white pb-2 mb-4">Design System</h2>
+
+                <!-- Abas -->
+                <div class="flex gap-2 mb-4">
+                    <button id="tab-botao" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-black">
+                        Botão
+                    </button>
+                    <button id="tab-lista" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
+                        Lista
+                    </button>
+                    <button id="tab-input" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
+                        Input
+                    </button>
+                    <button id="tab-tipografia" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
+                        Tipografia
+                    </button>
+                </div>
+
+                <!-- Conteúdo das Abas -->
+                <div class="space-y-6">
+                    <!-- Aba Botão -->
+                    <div id="content-botao" class="tab-content space-y-4">
+                        <input type="text" id="botao-conteudo" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="CONTEÚDO">
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">COR</label>
+                            <input type="text" id="botao-cor" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="#000000">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">BACKGROUND</label>
+                            <input type="text" id="botao-bg" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="#ffffff">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">PADDING</label>
+                            <div class="flex gap-2">
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '8px')">8px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '12px')">12px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '16px')">16px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '24px')">24px</button>
+                            </div>
+                            <input type="text" id="botao-padding" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="12px">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">BORDA</label>
+                            <input type="text" id="botao-borda" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="1px solid #000000">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">RADIUS</label>
+                            <div class="flex gap-2">
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '0px')">0px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '4px')">4px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '8px')">8px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '16px')">16px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '9999px')">Full</button>
+                            </div>
+                            <input type="text" id="botao-radius" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="8px">
+                        </div>
+                    </div>
+
+                    <!-- Aba Lista -->
+                    <div id="content-lista" class="tab-content space-y-4 hidden">
+                        <input type="text" id="lista-conteudo" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="CONTEÚDO">
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">COR</label>
+                            <input type="text" id="lista-cor" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="#000000">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">BACKGROUND</label>
+                            <input type="text" id="lista-bg" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="#ffffff">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">PADDING</label>
+                            <div class="flex gap-2">
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '8px')">8px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '12px')">12px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '16px')">16px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '24px')">24px</button>
+                            </div>
+                            <input type="text" id="lista-padding" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="12px">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">BORDA</label>
+                            <input type="text" id="lista-borda" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="1px solid #000000">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">RADIUS</label>
+                            <div class="flex gap-2">
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '0px')">0px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '4px')">4px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '8px')">8px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '16px')">16px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '9999px')">Full</button>
+                            </div>
+                            <input type="text" id="lista-radius" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="8px">
+                        </div>
+                    </div>
+
+                    <!-- Aba Input -->
+                    <div id="content-input" class="tab-content space-y-4 hidden">
+                        <input type="text" id="input-placeholder" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="PLACEHOLDER">
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">PADDING</label>
+                            <div class="flex gap-2">
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '8px')">8px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '12px')">12px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '16px')">16px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '24px')">24px</button>
+                            </div>
+                            <input type="text" id="input-padding" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="12px">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">BORDA</label>
+                            <input type="text" id="input-borda" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="1px solid #d4d4d4">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">RADIUS</label>
+                            <div class="flex gap-2">
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '0px')">0px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '4px')">4px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '8px')">8px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '16px')">16px</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '9999px')">Full</button>
+                            </div>
+                            <input type="text" id="input-radius" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="8px">
+                        </div>
+                    </div>
+
+                    <!-- Aba Tipografia -->
+                    <div id="content-tipografia" class="tab-content space-y-4 hidden">
+                        <input type="text" id="tipo-conteudo" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="CONTEÚDO">
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">TAMANHO</label>
+                            <div class="grid grid-cols-5 gap-2">
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'xs')">xs</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'sm')">sm</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'base')">base</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'lg')">lg</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'xl')">xl</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '2xl')">2xl</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '3xl')">3xl</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '4xl')">4xl</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '5xl')">5xl</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '6xl')">6xl</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '7xl')">7xl</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '8xl')">8xl</button>
+                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '9xl')">9xl</button>
+                            </div>
+                            <input type="text" id="tipo-tamanho" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="base">
+                        </div>
+                    </div>
+
+                    <!-- Conversão -->
+                    <div>
+                        <label for="tech-select" class="block text-xs font-medium text-gray-400 mb-1">Converter para:</label>
+                        <select id="tech-select" class="w-full text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38; padding: 8px 8px 8px 12px;">
+                            <option value="tailwind">Tailwind CSS</option>
+                            <option value="react-native">React Native</option>
+                            <option value="flutter">Flutter</option>
+                        </select>
+                    </div>
+                    <button id="convert-btn" class="w-full bg-white text-black font-bold py-2 px-3 rounded-lg hover:bg-gray-200 transition-colors duration-300 text-sm">
+                        Converter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita (Preview e Código) -->
+            <div class="space-y-6">
+                <!-- Preview Visual -->
+                <div>
+                    <h2 class="text-lg font-bold text-white pb-2 mb-4">Preview Visual</h2>
+                    <div class="rounded-lg p-8 flex items-center justify-center min-h-[200px]" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                        <div id="visual-preview">
+                            <p class="text-gray-500 text-sm">Preencha os campos para ver o preview</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Código Gerado -->
+                <div>
+                    <h2 class="text-lg font-bold text-white pb-2 mb-4">Código Gerado</h2>
+                    <div class="relative">
+                        <pre id="resultado" class="text-gray-200 p-4 rounded-lg min-h-[200px] overflow-auto whitespace-pre-wrap word-wrap break-word text-xs" style="background-color: #1a1a18;"><code>O resultado aparecerá aqui...</code></pre>
+                        <button id="copy-btn" class="absolute top-2 right-2 text-white py-1 px-2 rounded-md transition-colors text-xs" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">
+                            Copiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Elemento Toast para notificação -->
+    <div id="toast" class="fixed bottom-5 right-5 py-2 px-5 rounded-lg shadow-xl text-sm" style="opacity: 0; background-color: #3a3a38; color: #ffffff;">
+        Copiado com sucesso!
+    </div>
+
+    <script src="js/design.js"></script>
+</body>
+</html>
