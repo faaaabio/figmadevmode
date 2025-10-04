@@ -172,8 +172,6 @@
         // Elementos do DOM
         const layoutInput = document.getElementById('layout-input');
         const styleInput = document.getElementById('style-input');
-        const iconNameInput = document.getElementById('icon-name');
-        const iconSuggestions = document.getElementById('icon-suggestions');
         const techSelect = document.getElementById('tech-select');
         const convertBtn = document.getElementById('convert-btn');
         const resultadoEl = document.querySelector('#resultado code');
@@ -229,9 +227,21 @@
             if (currentTab === 'botao') {
                 const layout = parseCSS(layoutInput.value);
                 const style = parseCSS(styleInput.value);
-                const texto = document.getElementById('text-content').value || 'Button';
-                const textStyle = parseCSS(document.getElementById('text-style-botao').value);
-                const icone = iconNameInput.value;
+
+                // Coleta elementos dinâmicos
+                const elementos = [];
+                document.querySelectorAll('#botao-elementos > div').forEach(el => {
+                    const id = el.querySelector('input, textarea')?.id || '';
+                    if (id.includes('-text-')) {
+                        const content = el.querySelector('input[id$="-content"]')?.value || 'Texto';
+                        const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                        elementos.push({ type: 'text', content, style: parseCSS(styleText) });
+                    } else if (id.includes('-icon-')) {
+                        const name = el.querySelector('input[id$="-name"]')?.value || '';
+                        const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                        elementos.push({ type: 'icon', name, style: parseCSS(styleText) });
+                    }
+                });
 
                 // Estilos padrão se não houver nada preenchido
                 const defaultStyles = 'display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 8px; background: #ffffff; color: #000000;';
@@ -247,31 +257,53 @@
                     styles = defaultStyles;
                 }
 
-                let textStyles = '';
-                Object.entries(textStyle).forEach(([prop, value]) => {
-                    const val = resolveCSSVariables(value);
-                    textStyles += `${prop}: ${val}; `;
-                });
-
-                let iconHtml = '';
-                if (icone && lucideIconNames.includes(icone)) {
-                    // Carrega o ícone se não estiver em cache
-                    if (!iconCache.has(icone)) {
-                        await loadIconToCache(icone);
+                // Monta HTML dos elementos
+                let elementosHtml = '';
+                for (const el of elementos) {
+                    if (el.type === 'text') {
+                        let textStyles = '';
+                        Object.entries(el.style).forEach(([prop, value]) => {
+                            textStyles += `${prop}: ${resolveCSSVariables(value)}; `;
+                        });
+                        elementosHtml += `<span style="${textStyles}">${el.content}</span>`;
+                    } else if (el.type === 'icon' && el.name) {
+                        if (lucideIconNames.includes(el.name)) {
+                            if (!iconCache.has(el.name)) {
+                                await loadIconToCache(el.name);
+                            }
+                            const iconSvg = iconCache.get(el.name) || '';
+                            let iconStyles = 'display: flex; width: 20px; height: 20px;';
+                            Object.entries(el.style).forEach(([prop, value]) => {
+                                iconStyles += `${prop}: ${resolveCSSVariables(value)}; `;
+                            });
+                            elementosHtml += `<span style="${iconStyles}">${iconSvg}</span>`;
+                        }
                     }
-                    iconHtml = iconCache.get(icone) || '';
                 }
 
                 visualPreview.innerHTML = `
                     <div style="${styles}">
-                        ${iconHtml ? `<span style="display: flex; width: 20px; height: 20px;">${iconHtml}</span>` : ''}
-                        <span style="${textStyles}">${texto}</span>
+                        ${elementosHtml || '<span>Adicione elementos</span>'}
                     </div>
                 `;
             } else if (currentTab === 'lista') {
                 const layout = parseCSS(document.getElementById('lista-layout').value);
                 const itemStyle = parseCSS(document.getElementById('lista-item-style').value);
-                const textStyle = parseCSS(document.getElementById('lista-text').value);
+
+                // Coleta elementos dinâmicos da lista
+                const elementos = [];
+                document.querySelectorAll('#lista-elementos > div').forEach(el => {
+                    const id = el.querySelector('input, textarea')?.id || '';
+                    if (id.includes('-text-')) {
+                        const content = el.querySelector('input[id$="-content"]')?.value || 'Texto';
+                        const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                        elementos.push({ type: 'text', content, style: parseCSS(styleText) });
+                    } else if (id.includes('-icon-')) {
+                        const name = el.querySelector('input[id$="-name"]')?.value || '';
+                        const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                        elementos.push({ type: 'icon', name, style: parseCSS(styleText) });
+                    }
+                });
 
                 const defaultContainerStyles = 'display: flex; flex-direction: column; gap: 8px;';
                 const defaultItemStyles = 'padding: 12px; border-radius: 8px; background: #ffffff;';
@@ -296,17 +328,35 @@
                     itemStyles = defaultItemStyles;
                 }
 
-                let textStyles = '';
-                Object.entries(textStyle).forEach(([prop, value]) => {
-                    const val = resolveCSSVariables(value);
-                    textStyles += `${prop}: ${val}; `;
-                });
+                // Monta HTML dos elementos
+                let elementosHtml = '';
+                for (const el of elementos) {
+                    if (el.type === 'text') {
+                        let textStyles = '';
+                        Object.entries(el.style).forEach(([prop, value]) => {
+                            textStyles += `${prop}: ${resolveCSSVariables(value)}; `;
+                        });
+                        elementosHtml += `<span style="${textStyles}">${el.content}</span>`;
+                    } else if (el.type === 'icon' && el.name) {
+                        if (lucideIconNames.includes(el.name)) {
+                            if (!iconCache.has(el.name)) {
+                                await loadIconToCache(el.name);
+                            }
+                            const iconSvg = iconCache.get(el.name) || '';
+                            let iconStyles = 'display: flex; width: 20px; height: 20px;';
+                            Object.entries(el.style).forEach(([prop, value]) => {
+                                iconStyles += `${prop}: ${resolveCSSVariables(value)}; `;
+                            });
+                            elementosHtml += `<span style="${iconStyles}">${iconSvg}</span>`;
+                        }
+                    }
+                }
 
                 visualPreview.innerHTML = `
                     <div style="${containerStyles}">
-                        <div style="${itemStyles}"><span style="${textStyles}">Item 1</span></div>
-                        <div style="${itemStyles}"><span style="${textStyles}">Item 2</span></div>
-                        <div style="${itemStyles}"><span style="${textStyles}">Item 3</span></div>
+                        <div style="${itemStyles}">${elementosHtml || 'Item 1'}</div>
+                        <div style="${itemStyles}">${elementosHtml || 'Item 2'}</div>
+                        <div style="${itemStyles}">${elementosHtml || 'Item 3'}</div>
                     </div>
                 `;
             } else if (currentTab === 'input') {
@@ -361,49 +411,78 @@
             if (currentTab === 'botao') {
                 const layout = parseCSS(layoutInput.value);
                 const style = parseCSS(styleInput.value);
-                const texto = document.getElementById('text-content').value;
-                const textStyle = document.getElementById('text-style-botao').value;
-                const icone = iconNameInput.value;
-                const iconStyle = document.getElementById('icon-style').value;
+
+                // Coleta elementos dinâmicos
+                const elementos = [];
+                document.querySelectorAll('#botao-elementos > div').forEach(el => {
+                    const id = el.querySelector('input, textarea')?.id || '';
+                    if (id.includes('-text-')) {
+                        const content = el.querySelector('input[id$="-content"]')?.value || '';
+                        const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                        elementos.push({ type: 'text', content, style: styleText });
+                    } else if (id.includes('-icon-')) {
+                        const name = el.querySelector('input[id$="-name"]')?.value || '';
+                        const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                        elementos.push({ type: 'icon', name, style: styleText });
+                    }
+                });
 
                 prompt = `Crie um componente de botão com as seguintes especificações:\n\n`;
-                prompt += `**Texto:** "${texto}"\n`;
 
-                if (textStyle) {
-                    const textStyleObj = parseCSS(textStyle);
-                    prompt += `**Estilo do Texto:**\n`;
-                    Object.entries(textStyleObj).forEach(([prop, value]) => {
-                        const tokenValue = resolveCSSVariables(value, true);
-                        prompt += `- ${prop}: ${tokenValue}\n`;
-                    });
-                }
-
-                if (icone) {
-                    prompt += `\n**Ícone:** ${icone}\n`;
-                    if (iconStyle) {
-                        const iconStyleObj = parseCSS(iconStyle);
-                        prompt += `**Estilo do Ícone:**\n`;
-                        Object.entries(iconStyleObj).forEach(([prop, value]) => {
-                            const tokenValue = resolveCSSVariables(value, true);
-                            prompt += `- ${prop}: ${tokenValue}\n`;
-                        });
-                    }
-                }
-
-                prompt += `\n**Layout:**\n`;
+                prompt += `**Layout:**\n`;
                 Object.entries(layout).forEach(([prop, value]) => {
                     const tokenValue = resolveCSSVariables(value, true);
                     prompt += `- ${prop}: ${tokenValue}\n`;
                 });
+
                 prompt += `\n**Estilos:**\n`;
                 Object.entries(style).forEach(([prop, value]) => {
                     const tokenValue = resolveCSSVariables(value, true);
                     prompt += `- ${prop}: ${tokenValue}\n`;
                 });
+
+                if (elementos.length > 0) {
+                    prompt += `\n**Elementos:**\n`;
+                    elementos.forEach((el, i) => {
+                        if (el.type === 'text') {
+                            prompt += `\nTexto ${i + 1}: "${el.content}"\n`;
+                            if (el.style) {
+                                const styleObj = parseCSS(el.style);
+                                Object.entries(styleObj).forEach(([prop, value]) => {
+                                    const tokenValue = resolveCSSVariables(value, true);
+                                    prompt += `- ${prop}: ${tokenValue}\n`;
+                                });
+                            }
+                        } else if (el.type === 'icon') {
+                            prompt += `\nÍcone ${i + 1}: ${el.name}\n`;
+                            if (el.style) {
+                                const styleObj = parseCSS(el.style);
+                                Object.entries(styleObj).forEach(([prop, value]) => {
+                                    const tokenValue = resolveCSSVariables(value, true);
+                                    prompt += `- ${prop}: ${tokenValue}\n`;
+                                });
+                            }
+                        }
+                    });
+                }
             } else if (currentTab === 'lista') {
                 const layout = parseCSS(document.getElementById('lista-layout').value);
                 const itemStyle = parseCSS(document.getElementById('lista-item-style').value);
-                const textStyle = document.getElementById('lista-text').value;
+
+                // Coleta elementos dinâmicos
+                const elementos = [];
+                document.querySelectorAll('#lista-elementos > div').forEach(el => {
+                    const id = el.querySelector('input, textarea')?.id || '';
+                    if (id.includes('-text-')) {
+                        const content = el.querySelector('input[id$="-content"]')?.value || '';
+                        const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                        elementos.push({ type: 'text', content, style: styleText });
+                    } else if (id.includes('-icon-')) {
+                        const name = el.querySelector('input[id$="-name"]')?.value || '';
+                        const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                        elementos.push({ type: 'icon', name, style: styleText });
+                    }
+                });
 
                 prompt = `Crie um componente de lista com as seguintes especificações:\n\n`;
                 prompt += `**Layout da Lista:**\n`;
@@ -416,12 +495,29 @@
                     const tokenValue = resolveCSSVariables(value, true);
                     prompt += `- ${prop}: ${tokenValue}\n`;
                 });
-                if (textStyle) {
-                    const textStyleObj = parseCSS(textStyle);
-                    prompt += `\n**Texto do Item:**\n`;
-                    Object.entries(textStyleObj).forEach(([prop, value]) => {
-                        const tokenValue = resolveCSSVariables(value, true);
-                        prompt += `- ${prop}: ${tokenValue}\n`;
+
+                if (elementos.length > 0) {
+                    prompt += `\n**Elementos do Item:**\n`;
+                    elementos.forEach((el, i) => {
+                        if (el.type === 'text') {
+                            prompt += `\nTexto ${i + 1}: "${el.content}"\n`;
+                            if (el.style) {
+                                const styleObj = parseCSS(el.style);
+                                Object.entries(styleObj).forEach(([prop, value]) => {
+                                    const tokenValue = resolveCSSVariables(value, true);
+                                    prompt += `- ${prop}: ${tokenValue}\n`;
+                                });
+                            }
+                        } else if (el.type === 'icon') {
+                            prompt += `\nÍcone ${i + 1}: ${el.name}\n`;
+                            if (el.style) {
+                                const styleObj = parseCSS(el.style);
+                                Object.entries(styleObj).forEach(([prop, value]) => {
+                                    const tokenValue = resolveCSSVariables(value, true);
+                                    prompt += `- ${prop}: ${tokenValue}\n`;
+                                });
+                            }
+                        }
                     });
                 }
             } else if (currentTab === 'input') {
@@ -460,10 +556,9 @@
         }
 
         // Conversor para Tailwind CSS
-        function convertToTailwind(layout, style, icon, tab, allInputs) {
+        function convertToTailwind(layout, style, tab, allInputs) {
             const layoutStyles = parseCSS(layout);
             const styleStyles = parseCSS(style);
-            const iconStyles = icon && icon.style ? parseCSS(icon.style) : {};
 
             const allStyles = { ...layoutStyles, ...styleStyles };
             const classes = [];
@@ -557,22 +652,29 @@
             // Gera código do componente
             let code = `// Componente Tailwind CSS (${tab})\n`;
 
-            if (tab === 'botao') {
-                code += `<button className="${containerClasses}">\n`;
-                if (icon && icon.name) {
-                    const iconClasses = [];
-                    if (iconStyles.width) iconClasses.push(`w-[${resolveCSSVariables(iconStyles.width)}]`);
-                    if (iconStyles.height) iconClasses.push(`h-[${resolveCSSVariables(iconStyles.height)}]`);
-                    code += `  <Icon name="${icon.name}" className="${iconClasses.join(' ')}" />\n`;
+            if (tab === 'botao' || tab === 'lista') {
+                const tag = tab === 'botao' ? 'button' : 'ul';
+                const itemTag = tab === 'lista' ? 'li' : '';
+
+                code += `<${tag} className="${containerClasses}">\n`;
+
+                if (allInputs.elementos && allInputs.elementos.length > 0) {
+                    allInputs.elementos.forEach(el => {
+                        if (el.type === 'text') {
+                            code += `  <span>${el.content || 'Texto'}</span>\n`;
+                        } else if (el.type === 'icon' && el.name) {
+                            code += `  <Icon name="${el.name}" />\n`;
+                        }
+                    });
+                } else {
+                    code += `  <span>${tab === 'botao' ? 'Button' : 'Item'}</span>\n`;
                 }
-                code += `  <span>${allInputs.text || 'Button'}</span>\n`;
-                code += `</button>`;
-            } else if (tab === 'lista') {
-                code += `<ul className="${containerClasses}">\n`;
-                code += `  <li>Item 1</li>\n`;
-                code += `  <li>Item 2</li>\n`;
-                code += `  <li>Item 3</li>\n`;
-                code += `</ul>`;
+
+                code += `</${tag}>`;
+
+                if (tab === 'lista') {
+                    code = code.replace('<ul', '<ul>\n  <li').replace('</ul>', '</li>\n  <li>...</li>\n</ul>');
+                }
             } else if (tab === 'input') {
                 code += `<input\n`;
                 code += `  type="text"\n`;
@@ -589,10 +691,9 @@
         }
 
         // Conversor para React Native
-        function convertToReactNative(layout, style, icon, tab, allInputs) {
+        function convertToReactNative(layout, style, tab, allInputs) {
             const layoutStyles = parseCSS(layout);
             const styleStyles = parseCSS(style);
-            const iconStyles = icon && icon.style ? parseCSS(icon.style) : {};
 
             const allStyles = { ...layoutStyles, ...styleStyles };
             const rnStyles = {};
@@ -651,46 +752,46 @@
                 rnStyles.height = pxToNumber(h);
             }
 
-            // Estilos do ícone
-            const iconRNStyles = {};
-            if (iconStyles.width) {
-                iconRNStyles.width = pxToNumber(resolveCSSVariables(iconStyles.width));
-            }
-            if (iconStyles.height) {
-                iconRNStyles.height = pxToNumber(resolveCSSVariables(iconStyles.height));
-            }
-
             // Gera código
             let code = `// Componente React Native (${tab})\n`;
 
-            if (tab === 'botao') {
-                code += `import { TouchableOpacity, Text } from 'react-native';\n`;
-                if (icon && icon.name) {
-                    code += `import { ${toPascalCase(icon.name)} } from 'lucide-react-native';\n`;
+            if (tab === 'botao' || tab === 'lista') {
+                const comp = tab === 'botao' ? 'TouchableOpacity' : 'View';
+                const imports = tab === 'botao' ?
+                    `import { TouchableOpacity, Text } from 'react-native';\n` :
+                    `import { View, Text } from 'react-native';\n`;
+
+                code += imports;
+
+                // Adiciona imports de ícones
+                if (allInputs.elementos) {
+                    const iconImports = allInputs.elementos
+                        .filter(el => el.type === 'icon' && el.name)
+                        .map(el => toPascalCase(el.name));
+                    if (iconImports.length > 0) {
+                        code += `import { ${iconImports.join(', ')} } from 'lucide-react-native';\n`;
+                    }
                 }
+
                 code += `\n`;
                 code += `const styles = StyleSheet.create({\n`;
-                code += `  button: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
-                if (icon && icon.name && Object.keys(iconRNStyles).length > 0) {
-                    code += `  icon: ${JSON.stringify(iconRNStyles, null, 4).replace(/"/g, "'")},\n`;
-                }
+                code += `  container: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
                 code += `});\n\n`;
-                code += `<TouchableOpacity style={styles.button}>\n`;
-                if (icon && icon.name) {
-                    code += `  <${toPascalCase(icon.name)} ${Object.keys(iconRNStyles).length > 0 ? 'style={styles.icon}' : ''} />\n`;
+                code += `<${comp} style={styles.container}>\n`;
+
+                if (allInputs.elementos && allInputs.elementos.length > 0) {
+                    allInputs.elementos.forEach(el => {
+                        if (el.type === 'text') {
+                            code += `  <Text>${el.content || 'Texto'}</Text>\n`;
+                        } else if (el.type === 'icon' && el.name) {
+                            code += `  <${toPascalCase(el.name)} />\n`;
+                        }
+                    });
+                } else {
+                    code += `  <Text>${tab === 'botao' ? 'Button' : 'Item'}</Text>\n`;
                 }
-                code += `  <Text>${allInputs.text || 'Button'}</Text>\n`;
-                code += `</TouchableOpacity>`;
-            } else if (tab === 'lista') {
-                code += `import { View, Text, FlatList } from 'react-native';\n\n`;
-                code += `const styles = StyleSheet.create({\n`;
-                code += `  list: ${JSON.stringify(rnStyles, null, 4).replace(/"/g, "'")},\n`;
-                code += `});\n\n`;
-                code += `<FlatList\n`;
-                code += `  data={['Item 1', 'Item 2', 'Item 3']}\n`;
-                code += `  renderItem={({item}) => <Text>{item}</Text>}\n`;
-                code += `  style={styles.list}\n`;
-                code += `/>`;
+
+                code += `</${comp}>`;
             } else if (tab === 'input') {
                 code += `import { TextInput } from 'react-native';\n\n`;
                 code += `const styles = StyleSheet.create({\n`;
@@ -718,10 +819,9 @@
         }
 
         // Conversor para Flutter
-        function convertToFlutter(layout, style, icon, tab, allInputs) {
+        function convertToFlutter(layout, style, tab, allInputs) {
             const layoutStyles = parseCSS(layout);
             const styleStyles = parseCSS(style);
-            const iconStyles = icon && icon.style ? parseCSS(icon.style) : {};
 
             const allStyles = { ...layoutStyles, ...styleStyles };
 
@@ -778,29 +878,32 @@
             }
 
             // Child baseado na aba
-            if (tab === 'botao') {
-                code += `  child: ElevatedButton(\n`;
-                code += `    onPressed: () {},\n`;
-                if (icon && icon.name) {
+            if (tab === 'botao' || tab === 'lista') {
+                const widget = tab === 'botao' ? 'ElevatedButton' : 'Column';
+
+                if (tab === 'botao') {
+                    code += `  child: ${widget}(\n`;
+                    code += `    onPressed: () {},\n`;
+                } else {
+                    code += `  child: ${widget}(\n`;
+                }
+
+                if (allInputs.elementos && allInputs.elementos.length > 0) {
                     code += `    child: Row(\n`;
                     code += `      children: [\n`;
-                    const iconSize = iconStyles.width ? pxToNumber(resolveCSSVariables(iconStyles.width)) : 24;
-                    code += `        Icon(Icons.${icon.name.replace(/-/g, '_')}, size: ${iconSize}),\n`;
-                    code += `        SizedBox(width: 8),\n`;
-                    code += `        Text('${allInputs.text || 'Button'}'),\n`;
+                    allInputs.elementos.forEach(el => {
+                        if (el.type === 'text') {
+                            code += `        Text('${el.content || 'Texto'}'),\n`;
+                        } else if (el.type === 'icon' && el.name) {
+                            code += `        Icon(Icons.${el.name.replace(/-/g, '_')}),\n`;
+                        }
+                    });
                     code += `      ],\n`;
                     code += `    ),\n`;
                 } else {
-                    code += `    child: Text('${allInputs.text || 'Button'}'),\n`;
+                    code += `    child: Text('${tab === 'botao' ? 'Button' : 'Item'}'),\n`;
                 }
-                code += `  ),\n`;
-            } else if (tab === 'lista') {
-                code += `  child: ListView(\n`;
-                code += `    children: [\n`;
-                code += `      ListTile(title: Text('Item 1')),\n`;
-                code += `      ListTile(title: Text('Item 2')),\n`;
-                code += `      ListTile(title: Text('Item 3')),\n`;
-                code += `    ],\n`;
+
                 code += `  ),\n`;
             } else if (tab === 'input') {
                 code += `  child: TextField(\n`;
@@ -885,59 +988,6 @@
             }
         }
 
-        // ===== EVENT LISTENERS =====
-
-        // Autocomplete com debounce
-        let debounceTimer;
-        iconNameInput.addEventListener('input', () => {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                const query = iconNameInput.value.toLowerCase();
-                iconSuggestions.innerHTML = '';
-                if (query.length < 1) {
-                    iconSuggestions.classList.add('hidden');
-                    return;
-                }
-
-                const filteredIcons = lucideIconNames.filter(name => name.startsWith(query)).slice(0, 50);
-
-                if (filteredIcons.length > 0) {
-                    const fragment = document.createDocumentFragment();
-                    filteredIcons.forEach(name => {
-                        const suggestionItem = document.createElement('div');
-                        suggestionItem.textContent = name;
-                        suggestionItem.className = 'p-2 cursor-pointer hover:bg-gray-700';
-                        suggestionItem.addEventListener('click', async () => {
-                            iconNameInput.value = name;
-                            iconSuggestions.classList.add('hidden');
-                            await loadIconToCache(name);
-                            await updateVisualPreview();
-                        });
-                        fragment.appendChild(suggestionItem);
-                    });
-                    iconSuggestions.appendChild(fragment);
-                    iconSuggestions.classList.remove('hidden');
-                } else {
-                    iconSuggestions.classList.add('hidden');
-                }
-            }, 150);
-        });
-
-        iconNameInput.addEventListener('blur', () => {
-            setTimeout(() => {
-                if (!iconSuggestions.matches(':hover')) {
-                    iconSuggestions.classList.add('hidden');
-                    updateIconPreview(iconNameInput.value);
-                }
-            }, 200);
-        });
-
-        document.addEventListener('click', (event) => {
-            if (!iconNameInput.parentElement.contains(event.target)) {
-                iconSuggestions.classList.add('hidden');
-            }
-        });
-
         // ===== SISTEMA DE ABAS =====
         function switchTab(tabName) {
             // Atualiza currentTab
@@ -986,23 +1036,27 @@
                     let inputs = {};
 
                     // Pega os dados conforme a aba ativa
-                    if (currentTab === 'botao') {
+                    if (currentTab === 'botao' || currentTab === 'lista') {
+                        // Coleta elementos dinâmicos
+                        const containerId = currentTab === 'botao' ? 'botao-elementos' : 'lista-elementos';
+                        const elementos = [];
+                        document.querySelectorAll(`#${containerId} > div`).forEach(el => {
+                            const id = el.querySelector('input, textarea')?.id || '';
+                            if (id.includes('-text-')) {
+                                const content = el.querySelector('input[id$="-content"]')?.value || '';
+                                const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                                elementos.push({ type: 'text', content, style: styleText });
+                            } else if (id.includes('-icon-')) {
+                                const name = el.querySelector('input[id$="-name"]')?.value || '';
+                                const styleText = el.querySelector('textarea[id$="-style"]')?.value || '';
+                                elementos.push({ type: 'icon', name, style: styleText });
+                            }
+                        });
+
                         inputs = {
-                            layout: layoutInput.value,
-                            style: styleInput.value,
-                            icon: {
-                                name: iconNameInput.value,
-                                style: document.getElementById('icon-style').value,
-                            },
-                            text: document.getElementById('text-content').value,
-                            textStyle: document.getElementById('text-style-botao').value
-                        };
-                    } else if (currentTab === 'lista') {
-                        inputs = {
-                            layout: document.getElementById('lista-layout').value,
-                            style: document.getElementById('lista-item-style').value,
-                            textStyle: document.getElementById('lista-text').value,
-                            text: 'Item'
+                            layout: currentTab === 'botao' ? layoutInput.value : document.getElementById('lista-layout').value,
+                            style: currentTab === 'botao' ? styleInput.value : document.getElementById('lista-item-style').value,
+                            elementos: elementos
                         };
                     } else if (currentTab === 'input') {
                         inputs = {
@@ -1019,13 +1073,13 @@
 
                     switch(tech) {
                         case 'tailwind':
-                            result = convertToTailwind(inputs.layout || '', inputs.style || '', inputs.icon || {}, currentTab, inputs);
+                            result = convertToTailwind(inputs.layout || '', inputs.style || '', currentTab, inputs);
                             break;
                         case 'react-native':
-                            result = convertToReactNative(inputs.layout || '', inputs.style || '', inputs.icon || {}, currentTab, inputs);
+                            result = convertToReactNative(inputs.layout || '', inputs.style || '', currentTab, inputs);
                             break;
                         case 'flutter':
-                            result = convertToFlutter(inputs.layout || '', inputs.style || '', inputs.icon || {}, currentTab, inputs);
+                            result = convertToFlutter(inputs.layout || '', inputs.style || '', currentTab, inputs);
                             break;
                         default:
                             result = '// Tecnologia não suportada';
@@ -1088,21 +1142,10 @@
         // Botão
         layoutInput.addEventListener('input', updateVisualPreview);
         styleInput.addEventListener('input', updateVisualPreview);
-        document.getElementById('text-content').addEventListener('input', updateVisualPreview);
-        document.getElementById('text-style-botao').addEventListener('input', updateVisualPreview);
-
-        let iconDebounceTimer;
-        iconNameInput.addEventListener('input', () => {
-            clearTimeout(iconDebounceTimer);
-            iconDebounceTimer = setTimeout(async () => {
-                await updateVisualPreview();
-            }, 300); // delay para carregar ícone
-        });
 
         // Lista
         document.getElementById('lista-layout').addEventListener('input', updateVisualPreview);
         document.getElementById('lista-item-style').addEventListener('input', updateVisualPreview);
-        document.getElementById('lista-text').addEventListener('input', updateVisualPreview);
 
         // Input
         document.getElementById('input-layout').addEventListener('input', updateVisualPreview);
