@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Tokens Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="text-gray-300 text-sm" style="background-color: #262624;">
+
+    <div class="p-4 md:p-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Coluna da Esquerda (Entradas) -->
+            <div>
+                <h2 class="text-lg font-bold text-white pb-2 mb-4">Design Tokens</h2>
+
+                <!-- Abas -->
+                <div class="flex gap-2 mb-4">
+                    <button id="tab-tipografia" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-black">
+                        Tipografia
+                    </button>
+                    <button id="tab-cores" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
+                        Cores
+                    </button>
+                    <button id="tab-spacing" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
+                        Spacing
+                    </button>
+                    <button id="tab-radius" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
+                        Radius
+                    </button>
+                </div>
+
+                <!-- Conteúdo das Abas -->
+                <div class="space-y-6">
+                    <!-- Aba Tipografia -->
+                    <div id="content-tipografia" class="tab-content space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">FONT FAMILY</label>
+                            <input type="text" id="tipo-font-family" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="Inter, sans-serif">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">FONT SIZES</label>
+                            <div class="space-y-2">
+                                <input type="text" id="tipo-xs" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="xs: 12px">
+                                <input type="text" id="tipo-sm" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="sm: 14px">
+                                <input type="text" id="tipo-base" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="base: 16px">
+                                <input type="text" id="tipo-lg" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="lg: 18px">
+                                <input type="text" id="tipo-xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="xl: 20px">
+                                <input type="text" id="tipo-2xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="2xl: 24px">
+                                <input type="text" id="tipo-3xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="3xl: 30px">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">FONT WEIGHTS</label>
+                            <div class="space-y-2">
+                                <input type="text" id="tipo-light" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="light: 300">
+                                <input type="text" id="tipo-regular" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="regular: 400">
+                                <input type="text" id="tipo-medium" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="medium: 500">
+                                <input type="text" id="tipo-semibold" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="semibold: 600">
+                                <input type="text" id="tipo-bold" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="bold: 700">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">LINE HEIGHTS</label>
+                            <div class="space-y-2">
+                                <input type="text" id="tipo-tight" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="tight: 1.25">
+                                <input type="text" id="tipo-normal" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="normal: 1.5">
+                                <input type="text" id="tipo-relaxed" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="relaxed: 1.75">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aba Cores -->
+                    <div id="content-cores" class="tab-content space-y-4 hidden">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">PRIMÁRIAS</label>
+                            <div class="space-y-2">
+                                <input type="text" id="cor-primary" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="primary: #3b82f6">
+                                <input type="text" id="cor-primary-dark" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="primary-dark: #2563eb">
+                                <input type="text" id="cor-primary-light" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="primary-light: #60a5fa">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">SECUNDÁRIAS</label>
+                            <div class="space-y-2">
+                                <input type="text" id="cor-secondary" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="secondary: #8b5cf6">
+                                <input type="text" id="cor-secondary-dark" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="secondary-dark: #7c3aed">
+                                <input type="text" id="cor-secondary-light" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="secondary-light: #a78bfa">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">NEUTRAS</label>
+                            <div class="space-y-2">
+                                <input type="text" id="cor-white" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="white: #ffffff">
+                                <input type="text" id="cor-black" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="black: #000000">
+                                <input type="text" id="cor-gray-100" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="gray-100: #f3f4f6">
+                                <input type="text" id="cor-gray-500" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="gray-500: #6b7280">
+                                <input type="text" id="cor-gray-900" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="gray-900: #111827">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">SEMÂNTICAS</label>
+                            <div class="space-y-2">
+                                <input type="text" id="cor-success" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="success: #10b981">
+                                <input type="text" id="cor-warning" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="warning: #f59e0b">
+                                <input type="text" id="cor-error" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="error: #ef4444">
+                                <input type="text" id="cor-info" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="info: #3b82f6">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aba Spacing -->
+                    <div id="content-spacing" class="tab-content space-y-4 hidden">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">SPACING SCALE</label>
+                            <div class="space-y-2">
+                                <input type="text" id="space-0" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="0: 0px">
+                                <input type="text" id="space-1" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="1: 4px">
+                                <input type="text" id="space-2" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="2: 8px">
+                                <input type="text" id="space-3" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="3: 12px">
+                                <input type="text" id="space-4" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="4: 16px">
+                                <input type="text" id="space-5" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="5: 20px">
+                                <input type="text" id="space-6" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="6: 24px">
+                                <input type="text" id="space-8" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="8: 32px">
+                                <input type="text" id="space-10" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="10: 40px">
+                                <input type="text" id="space-12" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="12: 48px">
+                                <input type="text" id="space-16" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="16: 64px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aba Radius -->
+                    <div id="content-radius" class="tab-content space-y-4 hidden">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-2">BORDER RADIUS SCALE</label>
+                            <div class="space-y-2">
+                                <input type="text" id="radius-none" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="none: 0px">
+                                <input type="text" id="radius-sm" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="sm: 2px">
+                                <input type="text" id="radius-base" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="base: 4px">
+                                <input type="text" id="radius-md" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="md: 6px">
+                                <input type="text" id="radius-lg" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="lg: 8px">
+                                <input type="text" id="radius-xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="xl: 12px">
+                                <input type="text" id="radius-2xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="2xl: 16px">
+                                <input type="text" id="radius-3xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="3xl: 24px">
+                                <input type="text" id="radius-full" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="full: 9999px">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formato de Saída -->
+                    <div>
+                        <label for="format-select" class="block text-xs font-medium text-gray-400 mb-1">Formato de saída:</label>
+                        <select id="format-select" class="w-full text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38; padding: 8px 8px 8px 12px;">
+                            <option value="css">CSS Variables</option>
+                            <option value="js">JavaScript Object</option>
+                            <option value="tailwind">Tailwind Config</option>
+                            <option value="scss">SCSS Variables</option>
+                        </select>
+                    </div>
+                    <button id="generate-btn" class="w-full bg-white text-black font-bold py-2 px-3 rounded-lg hover:bg-gray-200 transition-colors duration-300 text-sm">
+                        Gerar Tokens
+                    </button>
+                </div>
+            </div>
+
+            <!-- Coluna da Direita (Preview e Tokens) -->
+            <div class="space-y-6">
+                <!-- Preview Visual -->
+                <div>
+                    <h2 class="text-lg font-bold text-white pb-2 mb-4">Preview</h2>
+                    <div class="rounded-lg p-8 space-y-4" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                        <div id="visual-preview">
+                            <p class="text-gray-500 text-sm">Preencha os campos para ver o preview dos tokens</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tokens Gerados -->
+                <div>
+                    <h2 class="text-lg font-bold text-white pb-2 mb-4">Tokens Gerados</h2>
+                    <div class="relative">
+                        <pre id="resultado" class="text-gray-200 p-4 rounded-lg min-h-[400px] overflow-auto whitespace-pre-wrap word-wrap break-word text-xs" style="background-color: #1a1a18;"><code>Os tokens aparecerão aqui...</code></pre>
+                        <button id="copy-btn" class="absolute top-2 right-2 text-white py-1 px-2 rounded-md transition-colors text-xs" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">
+                            Copiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Elemento Toast para notificação -->
+    <div id="toast" class="fixed bottom-5 right-5 py-2 px-5 rounded-lg shadow-xl text-sm" style="opacity: 0; background-color: #3a3a38; color: #ffffff;">
+        Copiado com sucesso!
+    </div>
+
+    <script src="js/tokens.js"></script>
+</body>
+</html>
