@@ -347,6 +347,70 @@ function convertToFlutter() {
     return code;
 }
 
+function convertToPrompt() {
+    let prompt = '';
+
+    if (currentTab === 'botao') {
+        const conteudo = document.getElementById('botao-conteudo').value || 'Botão';
+        const cor = document.getElementById('botao-cor').value || '#000000';
+        const bg = document.getElementById('botao-bg').value || '#ffffff';
+        const padding = document.getElementById('botao-padding').value || '12px';
+        const borda = document.getElementById('botao-borda').value || 'none';
+        const radius = document.getElementById('botao-radius').value || '8px';
+
+        prompt = `Crie um componente de botão com as seguintes especificações:\n\n`;
+        prompt += `**Conteúdo:** "${conteudo}"\n\n`;
+        prompt += `**Estilos:**\n`;
+        prompt += `- Cor do texto: ${cor}\n`;
+        prompt += `- Background: ${bg}\n`;
+        prompt += `- Padding: ${padding}\n`;
+        prompt += `- Borda: ${borda}\n`;
+        prompt += `- Border radius: ${radius}\n`;
+
+    } else if (currentTab === 'lista') {
+        const conteudo = document.getElementById('lista-conteudo').value || 'Item';
+        const cor = document.getElementById('lista-cor').value || '#000000';
+        const bg = document.getElementById('lista-bg').value || '#ffffff';
+        const padding = document.getElementById('lista-padding').value || '12px';
+        const borda = document.getElementById('lista-borda').value || 'none';
+        const radius = document.getElementById('lista-radius').value || '8px';
+
+        prompt = `Crie um componente de lista com as seguintes especificações:\n\n`;
+        prompt += `**Conteúdo dos itens:** "${conteudo}"\n\n`;
+        prompt += `**Estilos dos itens:**\n`;
+        prompt += `- Cor do texto: ${cor}\n`;
+        prompt += `- Background: ${bg}\n`;
+        prompt += `- Padding: ${padding}\n`;
+        prompt += `- Borda: ${borda}\n`;
+        prompt += `- Border radius: ${radius}\n`;
+
+    } else if (currentTab === 'input') {
+        const placeholder = document.getElementById('input-placeholder').value || 'Digite algo...';
+        const padding = document.getElementById('input-padding').value || '12px';
+        const borda = document.getElementById('input-borda').value || '1px solid #d4d4d4';
+        const radius = document.getElementById('input-radius').value || '8px';
+
+        prompt = `Crie um componente de input com as seguintes especificações:\n\n`;
+        prompt += `**Placeholder:** "${placeholder}"\n\n`;
+        prompt += `**Estilos:**\n`;
+        prompt += `- Padding: ${padding}\n`;
+        prompt += `- Borda: ${borda}\n`;
+        prompt += `- Border radius: ${radius}\n`;
+
+    } else if (currentTab === 'tipografia') {
+        const conteudo = document.getElementById('tipo-conteudo').value || 'Texto';
+        const tamanho = document.getElementById('tipo-tamanho').value || 'base';
+        const fontSize = sizeMap[tamanho] || '16px';
+
+        prompt = `Crie um elemento de texto com as seguintes especificações:\n\n`;
+        prompt += `**Conteúdo:** "${conteudo}"\n\n`;
+        prompt += `**Estilos:**\n`;
+        prompt += `- Tamanho (${tamanho}): ${fontSize}\n`;
+    }
+
+    return prompt;
+}
+
 // ===== SISTEMA DE ABAS =====
 
 function switchTab(tabName) {
@@ -390,6 +454,9 @@ convertBtn.addEventListener('click', () => {
         let result = '';
 
         switch(tech) {
+            case 'prompt':
+                result = convertToPrompt();
+                break;
             case 'tailwind':
                 result = convertToTailwind();
                 break;

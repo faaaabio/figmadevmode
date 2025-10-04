@@ -346,6 +346,98 @@ function generateSCSS() {
     return scss;
 }
 
+function generatePrompt() {
+    let prompt = '';
+
+    if (currentTab === 'tipografia') {
+        const tokens = getTypographyTokens();
+
+        prompt = `Crie um design system de tipografia com os seguintes tokens:\n\n`;
+        prompt += `**Font Family:** ${tokens.fontFamily}\n\n`;
+
+        if (Object.keys(tokens.fontSize).length > 0) {
+            prompt += `**Font Sizes:**\n`;
+            Object.entries(tokens.fontSize).forEach(([key, value]) => {
+                prompt += `- ${key}: ${value}\n`;
+            });
+            prompt += `\n`;
+        }
+
+        if (Object.keys(tokens.fontWeight).length > 0) {
+            prompt += `**Font Weights:**\n`;
+            Object.entries(tokens.fontWeight).forEach(([key, value]) => {
+                prompt += `- ${key}: ${value}\n`;
+            });
+            prompt += `\n`;
+        }
+
+        if (Object.keys(tokens.lineHeight).length > 0) {
+            prompt += `**Line Heights:**\n`;
+            Object.entries(tokens.lineHeight).forEach(([key, value]) => {
+                prompt += `- ${key}: ${value}\n`;
+            });
+        }
+
+    } else if (currentTab === 'cores') {
+        const tokens = getColorTokens();
+
+        prompt = `Crie um design system de cores com os seguintes tokens:\n\n`;
+
+        if (Object.keys(tokens.primary).length > 0) {
+            prompt += `**Cores Primárias:**\n`;
+            Object.entries(tokens.primary).forEach(([key, value]) => {
+                prompt += `- ${key}: ${value}\n`;
+            });
+            prompt += `\n`;
+        }
+
+        if (Object.keys(tokens.secondary).length > 0) {
+            prompt += `**Cores Secundárias:**\n`;
+            Object.entries(tokens.secondary).forEach(([key, value]) => {
+                prompt += `- ${key}: ${value}\n`;
+            });
+            prompt += `\n`;
+        }
+
+        if (Object.keys(tokens.neutral).length > 0) {
+            prompt += `**Cores Neutras:**\n`;
+            Object.entries(tokens.neutral).forEach(([key, value]) => {
+                prompt += `- ${key}: ${value}\n`;
+            });
+            prompt += `\n`;
+        }
+
+        if (Object.keys(tokens.semantic).length > 0) {
+            prompt += `**Cores Semânticas:**\n`;
+            Object.entries(tokens.semantic).forEach(([key, value]) => {
+                prompt += `- ${key}: ${value}\n`;
+            });
+        }
+
+    } else if (currentTab === 'spacing') {
+        const tokens = getSpacingTokens();
+
+        prompt = `Crie um design system de espaçamento com os seguintes tokens:\n\n`;
+        prompt += `**Spacing Scale:**\n`;
+        Object.entries(tokens).forEach(([key, value]) => {
+            prompt += `- ${key}: ${value}\n`;
+        });
+
+    } else if (currentTab === 'radius') {
+        const tokens = getRadiusTokens();
+
+        prompt = `Crie um design system de border radius com os seguintes tokens:\n\n`;
+        prompt += `**Border Radius Scale:**\n`;
+        Object.entries(tokens).forEach(([key, value]) => {
+            prompt += `- ${key}: ${value}\n`;
+        });
+    }
+
+    prompt += `\n---\n\nUse estes tokens de forma consistente em todos os componentes do design system.`;
+
+    return prompt;
+}
+
 // ===== PREVIEW VISUAL =====
 
 function updateVisualPreview() {
@@ -459,6 +551,9 @@ generateBtn.addEventListener('click', () => {
         let result = '';
 
         switch(format) {
+            case 'prompt':
+                result = generatePrompt();
+                break;
             case 'css':
                 result = generateCSS();
                 break;
