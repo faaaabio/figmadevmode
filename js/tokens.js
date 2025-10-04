@@ -61,7 +61,7 @@ let currentTab = 'tipografia';
 
 function getTypographyTokens() {
     const tokens = {
-        fontFamily: document.getElementById('tipo-font-family').value || 'Inter, sans-serif',
+        fontFamily: document.getElementById('tipo-font-family')?.value || 'Inter, sans-serif',
         fontSize: {},
         fontWeight: {},
         lineHeight: {}
@@ -70,7 +70,7 @@ function getTypographyTokens() {
     // Font Sizes
     const sizes = ['xs', 'sm', 'base', 'lg', 'xl', '2xl', '3xl'];
     sizes.forEach(size => {
-        const value = document.getElementById(`tipo-${size}`).value;
+        const value = document.getElementById(`tipo-${size}`)?.value;
         if (value) {
             const match = value.match(/:\s*(.+)/);
             tokens.fontSize[size] = match ? match[1].trim() : value;
@@ -80,7 +80,7 @@ function getTypographyTokens() {
     // Font Weights
     const weights = ['light', 'regular', 'medium', 'semibold', 'bold'];
     weights.forEach(weight => {
-        const value = document.getElementById(`tipo-${weight}`).value;
+        const value = document.getElementById(`tipo-${weight}`)?.value;
         if (value) {
             const match = value.match(/:\s*(.+)/);
             tokens.fontWeight[weight] = match ? match[1].trim() : value;
@@ -90,7 +90,7 @@ function getTypographyTokens() {
     // Line Heights
     const lineHeights = ['tight', 'normal', 'relaxed'];
     lineHeights.forEach(lh => {
-        const value = document.getElementById(`tipo-${lh}`).value;
+        const value = document.getElementById(`tipo-${lh}`)?.value;
         if (value) {
             const match = value.match(/:\s*(.+)/);
             tokens.lineHeight[lh] = match ? match[1].trim() : value;
@@ -110,7 +110,7 @@ function getColorTokens() {
 
     // Primary
     ['primary', 'primary-dark', 'primary-light'].forEach(color => {
-        const value = document.getElementById(`cor-${color}`).value;
+        const value = document.getElementById(`cor-${color}`)?.value;
         if (value) {
             const match = value.match(/:\s*(.+)/);
             tokens.primary[color] = match ? match[1].trim() : value;
@@ -119,7 +119,7 @@ function getColorTokens() {
 
     // Secondary
     ['secondary', 'secondary-dark', 'secondary-light'].forEach(color => {
-        const value = document.getElementById(`cor-${color}`).value;
+        const value = document.getElementById(`cor-${color}`)?.value;
         if (value) {
             const match = value.match(/:\s*(.+)/);
             tokens.secondary[color] = match ? match[1].trim() : value;
@@ -128,7 +128,7 @@ function getColorTokens() {
 
     // Neutral
     ['white', 'black', 'gray-100', 'gray-500', 'gray-900'].forEach(color => {
-        const value = document.getElementById(`cor-${color}`).value;
+        const value = document.getElementById(`cor-${color}`)?.value;
         if (value) {
             const match = value.match(/:\s*(.+)/);
             tokens.neutral[color] = match ? match[1].trim() : value;
@@ -137,7 +137,7 @@ function getColorTokens() {
 
     // Semantic
     ['success', 'warning', 'error', 'info'].forEach(color => {
-        const value = document.getElementById(`cor-${color}`).value;
+        const value = document.getElementById(`cor-${color}`)?.value;
         if (value) {
             const match = value.match(/:\s*(.+)/);
             tokens.semantic[color] = match ? match[1].trim() : value;
@@ -152,7 +152,7 @@ function getSpacingTokens() {
     const spaces = ['0', '1', '2', '3', '4', '5', '6', '8', '10', '12', '16'];
 
     spaces.forEach(space => {
-        const value = document.getElementById(`space-${space}`).value;
+        const value = document.getElementById(`space-${space}`)?.value;
         if (value) {
             const match = value.match(/:\s*(.+)/);
             tokens[space] = match ? match[1].trim() : value;
@@ -167,7 +167,7 @@ function getRadiusTokens() {
     const radii = ['none', 'sm', 'base', 'md', 'lg', 'xl', '2xl', '3xl', 'full'];
 
     radii.forEach(radius => {
-        const value = document.getElementById(`radius-${radius}`).value;
+        const value = document.getElementById(`radius-${radius}`)?.value;
         if (value) {
             const match = value.match(/:\s*(.+)/);
             tokens[radius] = match ? match[1].trim() : value;

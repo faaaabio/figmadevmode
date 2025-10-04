@@ -42,11 +42,11 @@ const sizeMap = {
 
 function updateVisualPreview() {
     if (currentTab === 'botao') {
-        const conteudo = document.getElementById('botao-conteudo').value || '';
-        const bg = document.getElementById('botao-bg').value || '#ffffff';
-        const padding = document.getElementById('botao-padding').value || '12px';
-        const borda = document.getElementById('botao-borda').value || 'none';
-        const radius = document.getElementById('botao-radius').value || '8px';
+        const conteudo = document.getElementById('botao-conteudo')?.value || '';
+        const bg = document.getElementById('botao-bg')?.value || '#ffffff';
+        const padding = document.getElementById('botao-padding')?.value || '12px';
+        const borda = document.getElementById('botao-borda')?.value || 'none';
+        const radius = document.getElementById('botao-radius')?.value || '8px';
         const display = document.getElementById('botao-display')?.value || 'inline-flex';
         const align = document.getElementById('botao-align')?.value || 'center';
         const gap = document.getElementById('botao-gap')?.value || '8px';
@@ -71,11 +71,11 @@ function updateVisualPreview() {
             </button>
         `;
     } else if (currentTab === 'lista') {
-        const conteudo = document.getElementById('lista-conteudo').value || '';
-        const bg = document.getElementById('lista-bg').value || '#ffffff';
-        const padding = document.getElementById('lista-padding').value || '12px';
-        const borda = document.getElementById('lista-borda').value || 'none';
-        const radius = document.getElementById('lista-radius').value || '8px';
+        const conteudo = document.getElementById('lista-conteudo')?.value || '';
+        const bg = document.getElementById('lista-bg')?.value || '#ffffff';
+        const padding = document.getElementById('lista-padding')?.value || '12px';
+        const borda = document.getElementById('lista-borda')?.value || 'none';
+        const radius = document.getElementById('lista-radius')?.value || '8px';
         const display = document.getElementById('lista-display')?.value || 'flex';
         const gap = document.getElementById('lista-gap')?.value || '8px';
 
@@ -101,16 +101,16 @@ function updateVisualPreview() {
             </ul>
         `;
     } else if (currentTab === 'input') {
-        const placeholder = document.getElementById('input-placeholder').value || 'Digite algo...';
-        const padding = document.getElementById('input-padding').value || '12px';
-        const borda = document.getElementById('input-borda').value || '1px solid #d4d4d4';
-        const radius = document.getElementById('input-radius').value || '8px';
+        const placeholder = document.getElementById('input-placeholder')?.value || 'Digite algo...';
+        const padding = document.getElementById('input-padding')?.value || '12px';
+        const borda = document.getElementById('input-borda')?.value || '1px solid #d4d4d4';
+        const radius = document.getElementById('input-radius')?.value || '8px';
 
         visualPreview.innerHTML = `
             <input type="text" placeholder="${placeholder}" style="padding: ${padding}; border: ${borda}; border-radius: ${radius}; width: 100%; max-width: 300px;">
         `;
     } else if (currentTab === 'tipografia') {
-        const conteudo = document.getElementById('tipo-conteudo').value || 'Texto de exemplo';
+        const conteudo = document.getElementById('tipo-conteudo')?.value || 'Texto de exemplo';
         const tamanho = document.getElementById('tipo-tamanho')?.value || '16px';
         const cor = document.getElementById('tipo-cor')?.value || '#ffffff';
 
@@ -126,8 +126,8 @@ function convertToTailwind() {
     let code = '';
 
     if (currentTab === 'botao') {
-        const conteudo = document.getElementById('botao-conteudo').value || 'Botão';
-        const cor = document.getElementById('botao-cor').value;
+        const conteudo = document.getElementById('botao-conteudo')?.value || 'Botão';
+        const cor = document.getElementById('botao-cor')?.value;
         const bg = document.getElementById('botao-bg').value;
         const padding = document.getElementById('botao-padding').value;
         const radius = document.getElementById('botao-radius').value;
@@ -155,8 +155,8 @@ function convertToTailwind() {
         code += `</button>`;
 
     } else if (currentTab === 'lista') {
-        const conteudo = document.getElementById('lista-conteudo').value || 'Item';
-        const cor = document.getElementById('lista-cor').value;
+        const conteudo = document.getElementById('lista-conteudo')?.value || 'Item';
+        const cor = document.getElementById('lista-cor')?.value;
         const bg = document.getElementById('lista-bg').value;
         const padding = document.getElementById('lista-padding').value;
         const radius = document.getElementById('lista-radius').value;
@@ -211,8 +211,8 @@ function convertToTailwind() {
         code += `/>`;
 
     } else if (currentTab === 'tipografia') {
-        const conteudo = document.getElementById('tipo-conteudo').value || 'Texto';
-        const tamanho = document.getElementById('tipo-tamanho').value || 'base';
+        const conteudo = document.getElementById('tipo-conteudo')?.value || 'Texto';
+        const tamanho = document.getElementById('tipo-tamanho')?.value || 'base';
 
         code = `<span className="text-${tamanho}">${conteudo}</span>`;
     }
@@ -224,8 +224,8 @@ function convertToReactNative() {
     let code = '';
 
     if (currentTab === 'botao') {
-        const conteudo = document.getElementById('botao-conteudo').value || 'Botão';
-        const cor = document.getElementById('botao-cor').value || '#000000';
+        const conteudo = document.getElementById('botao-conteudo')?.value || 'Botão';
+        const cor = document.getElementById('botao-cor')?.value || '#000000';
         const bg = document.getElementById('botao-bg').value || '#ffffff';
         const padding = document.getElementById('botao-padding').value || '12px';
         const radius = document.getElementById('botao-radius').value || '8px';
@@ -246,8 +246,8 @@ function convertToReactNative() {
         code += `</TouchableOpacity>`;
 
     } else if (currentTab === 'lista') {
-        const conteudo = document.getElementById('lista-conteudo').value || 'Item';
-        const cor = document.getElementById('lista-cor').value || '#000000';
+        const conteudo = document.getElementById('lista-conteudo')?.value || 'Item';
+        const cor = document.getElementById('lista-cor')?.value || '#000000';
         const bg = document.getElementById('lista-bg').value || '#ffffff';
         const padding = document.getElementById('lista-padding').value || '12px';
         const radius = document.getElementById('lista-radius').value || '8px';
@@ -292,8 +292,8 @@ function convertToReactNative() {
         code += `/>`;
 
     } else if (currentTab === 'tipografia') {
-        const conteudo = document.getElementById('tipo-conteudo').value || 'Texto';
-        const tamanho = document.getElementById('tipo-tamanho').value || 'base';
+        const conteudo = document.getElementById('tipo-conteudo')?.value || 'Texto';
+        const tamanho = document.getElementById('tipo-tamanho')?.value || 'base';
         const fontSize = parseInt(sizeMap[tamanho]);
 
         code = `import { Text } from 'react-native';\n\n`;
@@ -310,8 +310,8 @@ function convertToFlutter() {
     let code = '';
 
     if (currentTab === 'botao') {
-        const conteudo = document.getElementById('botao-conteudo').value || 'Botão';
-        const cor = document.getElementById('botao-cor').value || '#000000';
+        const conteudo = document.getElementById('botao-conteudo')?.value || 'Botão';
+        const cor = document.getElementById('botao-cor')?.value || '#000000';
         const bg = document.getElementById('botao-bg').value || '#ffffff';
         const padding = document.getElementById('botao-padding').value || '12px';
         const radius = document.getElementById('botao-radius').value || '8px';
@@ -332,8 +332,8 @@ function convertToFlutter() {
         code += `)`;
 
     } else if (currentTab === 'lista') {
-        const conteudo = document.getElementById('lista-conteudo').value || 'Item';
-        const cor = document.getElementById('lista-cor').value || '#000000';
+        const conteudo = document.getElementById('lista-conteudo')?.value || 'Item';
+        const cor = document.getElementById('lista-cor')?.value || '#000000';
         const bg = document.getElementById('lista-bg').value || '#ffffff';
         const padding = document.getElementById('lista-padding').value || '12px';
         const radius = document.getElementById('lista-radius').value || '8px';
@@ -369,8 +369,8 @@ function convertToFlutter() {
         code += `)`;
 
     } else if (currentTab === 'tipografia') {
-        const conteudo = document.getElementById('tipo-conteudo').value || 'Texto';
-        const tamanho = document.getElementById('tipo-tamanho').value || 'base';
+        const conteudo = document.getElementById('tipo-conteudo')?.value || 'Texto';
+        const tamanho = document.getElementById('tipo-tamanho')?.value || 'base';
         const fontSize = parseInt(sizeMap[tamanho]);
 
         code = `Text(\n`;
@@ -386,11 +386,11 @@ function convertToPrompt() {
     let prompt = '';
 
     if (currentTab === 'botao') {
-        const conteudo = document.getElementById('botao-conteudo').value || 'Botão';
-        const cor = document.getElementById('botao-cor').value || '#000000';
+        const conteudo = document.getElementById('botao-conteudo')?.value || 'Botão';
+        const cor = document.getElementById('botao-cor')?.value || '#000000';
         const bg = document.getElementById('botao-bg').value || '#ffffff';
         const padding = document.getElementById('botao-padding').value || '12px';
-        const borda = document.getElementById('botao-borda').value || 'none';
+        const borda = document.getElementById('botao-borda')?.value || 'none';
         const radius = document.getElementById('botao-radius').value || '8px';
 
         prompt = `Crie um componente de botão com as seguintes especificações:\n\n`;
@@ -403,11 +403,11 @@ function convertToPrompt() {
         prompt += `- Border radius: ${radius}\n`;
 
     } else if (currentTab === 'lista') {
-        const conteudo = document.getElementById('lista-conteudo').value || 'Item';
-        const cor = document.getElementById('lista-cor').value || '#000000';
+        const conteudo = document.getElementById('lista-conteudo')?.value || 'Item';
+        const cor = document.getElementById('lista-cor')?.value || '#000000';
         const bg = document.getElementById('lista-bg').value || '#ffffff';
         const padding = document.getElementById('lista-padding').value || '12px';
-        const borda = document.getElementById('lista-borda').value || 'none';
+        const borda = document.getElementById('lista-borda')?.value || 'none';
         const radius = document.getElementById('lista-radius').value || '8px';
 
         prompt = `Crie um componente de lista com as seguintes especificações:\n\n`;
@@ -433,8 +433,8 @@ function convertToPrompt() {
         prompt += `- Border radius: ${radius}\n`;
 
     } else if (currentTab === 'tipografia') {
-        const conteudo = document.getElementById('tipo-conteudo').value || 'Texto';
-        const tamanho = document.getElementById('tipo-tamanho').value || 'base';
+        const conteudo = document.getElementById('tipo-conteudo')?.value || 'Texto';
+        const tamanho = document.getElementById('tipo-tamanho')?.value || 'base';
         const fontSize = sizeMap[tamanho] || '16px';
 
         prompt = `Crie um elemento de texto com as seguintes especificações:\n\n`;
