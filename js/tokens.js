@@ -1,3 +1,52 @@
+// ===== FUNÇÕES GLOBAIS (DEVEM SER DEFINIDAS PRIMEIRO) =====
+
+// Armazenar valores de ajuste
+const typographySettings = {
+    small: { letterSpacing: 0, lineHeight: 0 },
+    medium: { letterSpacing: 0, lineHeight: 0 },
+    large: { letterSpacing: 0, lineHeight: 0 },
+    giant: { letterSpacing: 0, lineHeight: 0 }
+};
+
+let baseSpacing = 8;
+let baseRadius = 8;
+
+// Função global para Letter Spacing
+window.setLetterSpacing = function(size, value) {
+    typographySettings[size].letterSpacing = value;
+    console.log(`Letter spacing ${size}:`, value);
+    if (typeof updateVisualPreview === 'function') {
+        updateVisualPreview();
+    }
+}
+
+// Função global para Line Height
+window.setLineHeight = function(size, value) {
+    typographySettings[size].lineHeight = value;
+    console.log(`Line height ${size}:`, value);
+    if (typeof updateVisualPreview === 'function') {
+        updateVisualPreview();
+    }
+}
+
+// Função global para Base Spacing
+window.setBaseSpacing = function(value) {
+    baseSpacing = value;
+    console.log('Base spacing:', value);
+    if (typeof updateVisualPreview === 'function') {
+        updateVisualPreview();
+    }
+}
+
+// Função global para Base Radius
+window.setBaseRadius = function(value) {
+    baseRadius = value;
+    console.log('Base radius:', value);
+    if (typeof updateVisualPreview === 'function') {
+        updateVisualPreview();
+    }
+}
+
 // Elementos do DOM
 const formatSelect = document.getElementById('format-select');
 const generateBtn = document.getElementById('generate-btn');
@@ -672,52 +721,6 @@ if (modeDropdownBtn && modeDropdown && chevronIcon) {
         });
     });
 }
-
-// ===== FUNÇÕES PARA TIPOGRAFIA =====
-
-// Armazenar valores de ajuste
-const typographySettings = {
-    small: { letterSpacing: 0, lineHeight: 0 },
-    medium: { letterSpacing: 0, lineHeight: 0 },
-    large: { letterSpacing: 0, lineHeight: 0 },
-    giant: { letterSpacing: 0, lineHeight: 0 }
-};
-
-// Função global para Letter Spacing
-window.setLetterSpacing = function(size, value) {
-    typographySettings[size].letterSpacing = value;
-    console.log(`Letter spacing ${size}:`, value);
-    updateVisualPreview();
-}
-
-// Função global para Line Height
-window.setLineHeight = function(size, value) {
-    typographySettings[size].lineHeight = value;
-    console.log(`Line height ${size}:`, value);
-    updateVisualPreview();
-}
-
-// ===== FUNÇÕES PARA ESPAÇAMENTO =====
-
-let baseSpacing = 8;
-let baseRadius = 8;
-
-// Função global para Base Spacing
-window.setBaseSpacing = function(value) {
-    baseSpacing = value;
-    console.log('Base spacing:', value);
-    updateVisualPreview();
-}
-
-// Função global para Base Radius
-window.setBaseRadius = function(value) {
-    baseRadius = value;
-    console.log('Base radius:', value);
-    updateVisualPreview();
-}
-
-// Event listener para mudança de aba (incluindo nova aba espacamento)
-document.getElementById('tab-espacamento')?.addEventListener('click', () => switchTab('espacamento'));
 
 // Inicializa preview
 updateVisualPreview();

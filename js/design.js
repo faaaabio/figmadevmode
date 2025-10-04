@@ -1,3 +1,16 @@
+// ===== FUNÇÕES GLOBAIS (DEVEM SER DEFINIDAS PRIMEIRO) =====
+
+// Função global para definir valor através das tags
+window.setTagValue = function(inputId, value) {
+    const input = document.getElementById(inputId);
+    if (input) {
+        input.value = value;
+        if (typeof updateVisualPreview === 'function') {
+            updateVisualPreview();
+        }
+    }
+}
+
 // Elementos do DOM
 const techSelect = document.getElementById('tech-select');
 const convertBtn = document.getElementById('convert-btn');
@@ -24,15 +37,6 @@ const sizeMap = {
     '8xl': '96px',
     '9xl': '128px'
 };
-
-// Função global para definir valor através das tags
-window.setTagValue = function(inputId, value) {
-    const input = document.getElementById(inputId);
-    if (input) {
-        input.value = value;
-        updateVisualPreview();
-    }
-}
 
 // ===== PREVIEW VISUAL =====
 
