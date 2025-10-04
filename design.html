@@ -16,7 +16,19 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Coluna da Esquerda (Entradas) -->
             <div>
-                <h2 class="text-lg font-bold text-white pb-2 mb-4">Design System</h2>
+                <div class="relative pb-2 mb-4">
+                    <button id="mode-dropdown-btn" class="flex items-center gap-2 text-lg font-bold text-white hover:text-gray-300 transition-colors">
+                        <span id="mode-text">Design mode</span>
+                        <svg class="w-4 h-4 transition-transform" id="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="mode-dropdown" class="hidden absolute top-full mt-2 rounded-lg shadow-lg overflow-hidden z-10" style="background-color: #1a1a18; border: 1px solid #3a3a38; min-width: 150px;">
+                        <button class="mode-option w-full text-left px-4 py-2 text-sm text-white hover:bg-opacity-80 transition-colors" style="background-color: transparent;" data-mode="dev" onmouseover="this.style.backgroundColor='#3a3a38'" onmouseout="this.style.backgroundColor='transparent'">Dev mode</button>
+                        <button class="mode-option w-full text-left px-4 py-2 text-sm text-white hover:bg-opacity-80 transition-colors" style="background-color: transparent;" data-mode="design" onmouseover="this.style.backgroundColor='#3a3a38'" onmouseout="this.style.backgroundColor='transparent'">Design mode</button>
+                        <button class="mode-option w-full text-left px-4 py-2 text-sm text-white hover:bg-opacity-80 transition-colors" style="background-color: transparent;" data-mode="tokens" onmouseover="this.style.backgroundColor='#3a3a38'" onmouseout="this.style.backgroundColor='transparent'">Tokens</button>
+                    </div>
+                </div>
 
                 <!-- Abas -->
                 <div class="flex gap-2 mb-4">
@@ -37,146 +49,279 @@
                 <!-- Conteúdo das Abas -->
                 <div class="space-y-6">
                     <!-- Aba Botão -->
-                    <div id="content-botao" class="tab-content space-y-4">
-                        <input type="text" id="botao-conteudo" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="CONTEÚDO">
+                    <div id="content-botao" class="tab-content space-y-3">
+                        <input type="text" id="botao-conteudo" class="w-full p-2 text-white rounded text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="Conteúdo">
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">COR</label>
-                            <input type="text" id="botao-cor" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="#000000">
-                        </div>
+                        <!-- Hidden inputs para valores -->
+                        <input type="hidden" id="botao-display" value="inline-flex">
+                        <input type="hidden" id="botao-padding" value="12px">
+                        <input type="hidden" id="botao-align" value="center">
+                        <input type="hidden" id="botao-gap" value="8px">
+                        <input type="hidden" id="botao-radius" value="8px">
+                        <input type="hidden" id="botao-border" value="none">
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">BACKGROUND</label>
-                            <input type="text" id="botao-bg" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="#ffffff">
-                        </div>
+                        <!-- Layout -->
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">LAYOUT</label>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">PADDING</label>
-                            <div class="flex gap-2">
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '8px')">8px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '12px')">12px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '16px')">16px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '24px')">24px</button>
+                            <div>
+                                <span class="text-xs text-gray-500">Display</span>
+                                <div class="flex gap-1 mt-1">
+                                    <button class="tag-btn flex-1 py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-display', 'flex')">Flex</button>
+                                    <button class="tag-btn flex-1 py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-display', 'inline-flex')">Inline</button>
+                                </div>
                             </div>
-                            <input type="text" id="botao-padding" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="12px">
-                        </div>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">BORDA</label>
-                            <input type="text" id="botao-borda" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="1px solid #000000">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">RADIUS</label>
-                            <div class="flex gap-2">
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '0px')">0px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '4px')">4px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '8px')">8px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '16px')">16px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '9999px')">Full</button>
+                            <div>
+                                <span class="text-xs text-gray-500">Padding</span>
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '8px')">8</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '12px')">12</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '16px')">16</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-padding', '24px')">24</button>
+                                </div>
                             </div>
-                            <input type="text" id="botao-radius" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="8px">
+
+                            <div>
+                                <span class="text-xs text-gray-500">Align Items</span>
+                                <div class="grid grid-cols-3 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-align', 'center')">Center</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-align', 'start')">Start</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-align', 'end')">End</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Gap</span>
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-gap', '4px')">4</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-gap', '8px')">8</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-gap', '12px')">12</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-gap', '16px')">16</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estilo -->
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">ESTILO</label>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Border Radius</span>
+                                <div class="grid grid-cols-5 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '0')">0</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '4px')">4</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '8px')">8</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '16px')">16</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-radius', '9999px')">Full</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Border</span>
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-border', 'none')">None</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-border', '1px solid')">1px</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-border', '2px solid')">2px</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('botao-border', '4px solid')">4px</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Background</span>
+                                <input type="text" id="botao-bg" class="w-full p-2 text-white rounded text-xs mt-1" style="background-color: #262624; border: 1px solid #3a3a38;" placeholder="#ffffff">
+                            </div>
+                        </div>
+
+                        <!-- Elementos -->
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <div class="flex justify-between items-center">
+                                <label class="block text-xs font-medium text-gray-400">ELEMENTOS</label>
+                                <div class="flex gap-1">
+                                    <button id="add-botao-text-btn" class="text-xs px-2 py-1 text-white rounded" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">+ Texto</button>
+                                    <button id="add-botao-icon-btn" class="text-xs px-2 py-1 text-white rounded" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">+ Ícone</button>
+                                </div>
+                            </div>
+                            <div id="botao-elementos" class="space-y-2">
+                                <!-- Elementos serão adicionados aqui -->
+                            </div>
                         </div>
                     </div>
 
                     <!-- Aba Lista -->
-                    <div id="content-lista" class="tab-content space-y-4 hidden">
-                        <input type="text" id="lista-conteudo" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="CONTEÚDO">
+                    <div id="content-lista" class="tab-content space-y-3 hidden">
+                        <input type="text" id="lista-conteudo" class="w-full p-2 text-white rounded text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="Conteúdo">
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">COR</label>
-                            <input type="text" id="lista-cor" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="#000000">
-                        </div>
+                        <!-- Hidden inputs para valores -->
+                        <input type="hidden" id="lista-display" value="flex">
+                        <input type="hidden" id="lista-padding" value="12px">
+                        <input type="hidden" id="lista-gap" value="8px">
+                        <input type="hidden" id="lista-radius" value="8px">
+                        <input type="hidden" id="lista-border" value="none">
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">BACKGROUND</label>
-                            <input type="text" id="lista-bg" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="#ffffff">
-                        </div>
+                        <!-- Layout -->
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">LAYOUT</label>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">PADDING</label>
-                            <div class="flex gap-2">
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '8px')">8px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '12px')">12px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '16px')">16px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '24px')">24px</button>
+                            <div>
+                                <span class="text-xs text-gray-500">Display</span>
+                                <div class="flex gap-1 mt-1">
+                                    <button class="tag-btn flex-1 py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-display', 'flex')">Flex</button>
+                                    <button class="tag-btn flex-1 py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-display', 'grid')">Grid</button>
+                                </div>
                             </div>
-                            <input type="text" id="lista-padding" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="12px">
-                        </div>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">BORDA</label>
-                            <input type="text" id="lista-borda" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="1px solid #000000">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">RADIUS</label>
-                            <div class="flex gap-2">
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '0px')">0px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '4px')">4px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '8px')">8px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '16px')">16px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '9999px')">Full</button>
+                            <div>
+                                <span class="text-xs text-gray-500">Padding</span>
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '8px')">8</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '12px')">12</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '16px')">16</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-padding', '24px')">24</button>
+                                </div>
                             </div>
-                            <input type="text" id="lista-radius" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="8px">
+
+                            <div>
+                                <span class="text-xs text-gray-500">Gap</span>
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-gap', '4px')">4</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-gap', '8px')">8</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-gap', '12px')">12</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-gap', '16px')">16</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estilo -->
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">ESTILO</label>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Border Radius</span>
+                                <div class="grid grid-cols-5 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '0')">0</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '4px')">4</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '8px')">8</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '16px')">16</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-radius', '9999px')">Full</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Border</span>
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-border', 'none')">None</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-border', '1px solid')">1px</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-border', '2px solid')">2px</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('lista-border', '4px solid')">4px</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Background</span>
+                                <input type="text" id="lista-bg" class="w-full p-2 text-white rounded text-xs mt-1" style="background-color: #262624; border: 1px solid #3a3a38;" placeholder="#ffffff">
+                            </div>
+                        </div>
+
+                        <!-- Elementos -->
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <div class="flex justify-between items-center">
+                                <label class="block text-xs font-medium text-gray-400">ELEMENTOS</label>
+                                <div class="flex gap-1">
+                                    <button id="add-lista-text-btn" class="text-xs px-2 py-1 text-white rounded" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">+ Texto</button>
+                                    <button id="add-lista-icon-btn" class="text-xs px-2 py-1 text-white rounded" style="background-color: #3a3a38;" onmouseover="this.style.backgroundColor='#4a4a48'" onmouseout="this.style.backgroundColor='#3a3a38'">+ Ícone</button>
+                                </div>
+                            </div>
+                            <div id="lista-elementos" class="space-y-2">
+                                <!-- Elementos serão adicionados aqui -->
+                            </div>
                         </div>
                     </div>
 
                     <!-- Aba Input -->
-                    <div id="content-input" class="tab-content space-y-4 hidden">
-                        <input type="text" id="input-placeholder" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="PLACEHOLDER">
+                    <div id="content-input" class="tab-content space-y-3 hidden">
+                        <input type="text" id="input-placeholder" class="w-full p-2 text-white rounded text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="Placeholder">
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">PADDING</label>
-                            <div class="flex gap-2">
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '8px')">8px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '12px')">12px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '16px')">16px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '24px')">24px</button>
+                        <!-- Hidden inputs para valores -->
+                        <input type="hidden" id="input-padding" value="12px">
+                        <input type="hidden" id="input-radius" value="8px">
+                        <input type="hidden" id="input-border" value="1px solid #d4d4d4">
+
+                        <!-- Layout -->
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">LAYOUT</label>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Padding</span>
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '8px')">8</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '12px')">12</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '16px')">16</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-padding', '24px')">24</button>
+                                </div>
                             </div>
-                            <input type="text" id="input-padding" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="12px">
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">BORDA</label>
-                            <input type="text" id="input-borda" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="1px solid #d4d4d4">
-                        </div>
+                        <!-- Estilo -->
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">ESTILO</label>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">RADIUS</label>
-                            <div class="flex gap-2">
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '0px')">0px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '4px')">4px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '8px')">8px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '16px')">16px</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '9999px')">Full</button>
+                            <div>
+                                <span class="text-xs text-gray-500">Border Radius</span>
+                                <div class="grid grid-cols-5 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '0')">0</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '4px')">4</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '8px')">8</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '16px')">16</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-radius', '9999px')">Full</button>
+                                </div>
                             </div>
-                            <input type="text" id="input-radius" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="8px">
+
+                            <div>
+                                <span class="text-xs text-gray-500">Border</span>
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-border', 'none')">None</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-border', '1px solid')">1px</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-border', '2px solid')">2px</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('input-border', '4px solid')">4px</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Background</span>
+                                <input type="text" id="input-bg" class="w-full p-2 text-white rounded text-xs mt-1" style="background-color: #262624; border: 1px solid #3a3a38;" placeholder="#ffffff">
+                            </div>
                         </div>
                     </div>
 
                     <!-- Aba Tipografia -->
-                    <div id="content-tipografia" class="tab-content space-y-4 hidden">
-                        <input type="text" id="tipo-conteudo" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="CONTEÚDO">
+                    <div id="content-tipografia" class="tab-content space-y-3 hidden">
+                        <input type="text" id="tipo-conteudo" class="w-full p-2 text-white rounded text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="Conteúdo">
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">TAMANHO</label>
-                            <div class="grid grid-cols-5 gap-2">
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'xs')">xs</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'sm')">sm</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'base')">base</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'lg')">lg</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', 'xl')">xl</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '2xl')">2xl</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '3xl')">3xl</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '4xl')">4xl</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '5xl')">5xl</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '6xl')">6xl</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '7xl')">7xl</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '8xl')">8xl</button>
-                                <button class="tag-btn px-3 py-2 rounded text-xs transition-colors" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '9xl')">9xl</button>
+                        <!-- Hidden input para valores -->
+                        <input type="hidden" id="tipo-tamanho" value="16px">
+
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">TIPOGRAFIA</label>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Tamanho</span>
+                                <div class="grid grid-cols-4 gap-1 mt-1">
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '12px')">12</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '14px')">14</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '16px')">16</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '18px')">18</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '20px')">20</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '24px')">24</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '30px')">30</button>
+                                    <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setTagValue('tipo-tamanho', '36px')">36</button>
+                                </div>
                             </div>
-                            <input type="text" id="tipo-tamanho" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm mt-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="base">
+
+                            <div>
+                                <span class="text-xs text-gray-500">Cor</span>
+                                <input type="text" id="tipo-cor" class="w-full p-2 text-white rounded text-xs mt-1" style="background-color: #262624; border: 1px solid #3a3a38;" placeholder="#000000">
+                            </div>
                         </div>
                     </div>
 

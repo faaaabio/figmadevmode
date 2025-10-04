@@ -16,7 +16,19 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Coluna da Esquerda (Entradas) -->
             <div>
-                <h2 class="text-lg font-bold text-white pb-2 mb-4">Figma Dev Mode</h2>
+                <div class="relative pb-2 mb-4">
+                    <button id="mode-dropdown-btn" class="flex items-center gap-2 text-lg font-bold text-white hover:text-gray-300 transition-colors">
+                        <span id="mode-text">Dev mode</span>
+                        <svg class="w-4 h-4 transition-transform" id="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="mode-dropdown" class="hidden absolute top-full mt-2 rounded-lg shadow-lg overflow-hidden z-10" style="background-color: #1a1a18; border: 1px solid #3a3a38; min-width: 150px;">
+                        <button class="mode-option w-full text-left px-4 py-2 text-sm text-white hover:bg-opacity-80 transition-colors" style="background-color: transparent;" data-mode="dev" onmouseover="this.style.backgroundColor='#3a3a38'" onmouseout="this.style.backgroundColor='transparent'">Dev mode</button>
+                        <button class="mode-option w-full text-left px-4 py-2 text-sm text-white hover:bg-opacity-80 transition-colors" style="background-color: transparent;" data-mode="design" onmouseover="this.style.backgroundColor='#3a3a38'" onmouseout="this.style.backgroundColor='transparent'">Design mode</button>
+                        <button class="mode-option w-full text-left px-4 py-2 text-sm text-white hover:bg-opacity-80 transition-colors" style="background-color: transparent;" data-mode="tokens" onmouseover="this.style.backgroundColor='#3a3a38'" onmouseout="this.style.backgroundColor='transparent'">Tokens</button>
+                    </div>
+                </div>
 
                 <!-- Abas -->
                 <div class="flex gap-2 mb-4">

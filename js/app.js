@@ -1066,6 +1066,49 @@ document.getElementById('add-lista-icon-btn').addEventListener('click', () => {
     updateVisualPreview();
 });
 
+// ===== DROPDOWN DE MODOS =====
+
+const modeDropdownBtn = document.getElementById('mode-dropdown-btn');
+const modeDropdown = document.getElementById('mode-dropdown');
+const modeText = document.getElementById('mode-text');
+const chevronIcon = document.getElementById('chevron-icon');
+
+// Toggle dropdown
+modeDropdownBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    modeDropdown.classList.toggle('hidden');
+    chevronIcon.style.transform = modeDropdown.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+});
+
+// Fecha dropdown ao clicar fora
+document.addEventListener('click', (e) => {
+    if (!modeDropdown.contains(e.target) && e.target !== modeDropdownBtn) {
+        modeDropdown.classList.add('hidden');
+        chevronIcon.style.transform = 'rotate(0deg)';
+    }
+});
+
+// Selecionar modo
+document.querySelectorAll('.mode-option').forEach(option => {
+    option.addEventListener('click', (e) => {
+        const mode = e.target.dataset.mode;
+
+        if (mode === 'dev') {
+            modeText.textContent = 'Dev mode';
+            // Já estamos na página correta
+        } else if (mode === 'design') {
+            modeText.textContent = 'Design mode';
+            window.location.href = 'design.html';
+        } else if (mode === 'tokens') {
+            modeText.textContent = 'Tokens';
+            window.location.href = 'tokens.html';
+        }
+
+        modeDropdown.classList.add('hidden');
+        chevronIcon.style.transform = 'rotate(0deg)';
+    });
+});
+
 // Inicialização
 fetchLucideIcons();
 updateVisualPreview();

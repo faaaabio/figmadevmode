@@ -16,7 +16,19 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Coluna da Esquerda (Entradas) -->
             <div>
-                <h2 class="text-lg font-bold text-white pb-2 mb-4">Design Tokens</h2>
+                <div class="relative pb-2 mb-4">
+                    <button id="mode-dropdown-btn" class="flex items-center gap-2 text-lg font-bold text-white hover:text-gray-300 transition-colors">
+                        <span id="mode-text">Tokens</span>
+                        <svg class="w-4 h-4 transition-transform" id="chevron-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="mode-dropdown" class="hidden absolute top-full mt-2 rounded-lg shadow-lg overflow-hidden z-10" style="background-color: #1a1a18; border: 1px solid #3a3a38; min-width: 150px;">
+                        <button class="mode-option w-full text-left px-4 py-2 text-sm text-white hover:bg-opacity-80 transition-colors" style="background-color: transparent;" data-mode="dev" onmouseover="this.style.backgroundColor='#3a3a38'" onmouseout="this.style.backgroundColor='transparent'">Dev mode</button>
+                        <button class="mode-option w-full text-left px-4 py-2 text-sm text-white hover:bg-opacity-80 transition-colors" style="background-color: transparent;" data-mode="design" onmouseover="this.style.backgroundColor='#3a3a38'" onmouseout="this.style.backgroundColor='transparent'">Design mode</button>
+                        <button class="mode-option w-full text-left px-4 py-2 text-sm text-white hover:bg-opacity-80 transition-colors" style="background-color: transparent;" data-mode="tokens" onmouseover="this.style.backgroundColor='#3a3a38'" onmouseout="this.style.backgroundColor='transparent'">Tokens</button>
+                    </div>
+                </div>
 
                 <!-- Abas -->
                 <div class="flex gap-2 mb-4">
@@ -26,134 +38,180 @@
                     <button id="tab-cores" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
                         Cores
                     </button>
-                    <button id="tab-spacing" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
-                        Spacing
-                    </button>
-                    <button id="tab-radius" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
-                        Radius
+                    <button id="tab-espacamento" class="tab-button px-4 py-2 rounded-lg text-sm font-medium transition-colors text-gray-400" style="background-color: #1a1a18;">
+                        Espaçamento
                     </button>
                 </div>
 
                 <!-- Conteúdo das Abas -->
                 <div class="space-y-6">
                     <!-- Aba Tipografia -->
-                    <div id="content-tipografia" class="tab-content space-y-4">
+                    <div id="content-tipografia" class="tab-content space-y-3">
+                        <!-- Font Family -->
                         <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">FONT FAMILY</label>
-                            <input type="text" id="tipo-font-family" class="w-full p-3 text-white rounded-lg focus:ring-2 focus:ring-blue-500 transition text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="Inter, sans-serif">
+                            <label class="block text-xs font-medium text-gray-400 mb-1">Fonte (Google Fonts)</label>
+                            <select id="tipo-font-family" class="w-full p-2 text-white rounded text-sm" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                                <option value="Inter">Inter</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Lato">Lato</option>
+                                <option value="Montserrat">Montserrat</option>
+                                <option value="Poppins">Poppins</option>
+                                <option value="Source Sans Pro">Source Sans Pro</option>
+                                <option value="IBM Plex Sans">IBM Plex Sans</option>
+                                <option value="Work Sans">Work Sans</option>
+                                <option value="Plus Jakarta Sans">Plus Jakarta Sans</option>
+                            </select>
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">FONT SIZES</label>
-                            <div class="space-y-2">
-                                <input type="text" id="tipo-xs" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="xs: 12px">
-                                <input type="text" id="tipo-sm" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="sm: 14px">
-                                <input type="text" id="tipo-base" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="base: 16px">
-                                <input type="text" id="tipo-lg" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="lg: 18px">
-                                <input type="text" id="tipo-xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="xl: 20px">
-                                <input type="text" id="tipo-2xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="2xl: 24px">
-                                <input type="text" id="tipo-3xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="3xl: 30px">
+                        <!-- Sizes com ajuste de Letter Spacing -->
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">TAMANHOS E ESPAÇAMENTO</label>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Pequenas (12-14px)</span>
+                                <div class="grid grid-cols-2 gap-2 mt-1">
+                                    <div>
+                                        <span class="text-xs text-gray-600">Letter</span>
+                                        <div class="grid grid-cols-3 gap-1">
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('small', -1)">-1</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('small', 0)">0</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('small', 1)">+1</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-gray-600">Line</span>
+                                        <div class="grid grid-cols-3 gap-1">
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('small', -2)">-2</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('small', 0)">0</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('small', 2)">+2</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">FONT WEIGHTS</label>
-                            <div class="space-y-2">
-                                <input type="text" id="tipo-light" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="light: 300">
-                                <input type="text" id="tipo-regular" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="regular: 400">
-                                <input type="text" id="tipo-medium" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="medium: 500">
-                                <input type="text" id="tipo-semibold" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="semibold: 600">
-                                <input type="text" id="tipo-bold" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="bold: 700">
+                            <div>
+                                <span class="text-xs text-gray-500">Médias (16-20px)</span>
+                                <div class="grid grid-cols-2 gap-2 mt-1">
+                                    <div>
+                                        <span class="text-xs text-gray-600">Letter</span>
+                                        <div class="grid grid-cols-3 gap-1">
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('medium', -1)">-1</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('medium', 0)">0</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('medium', 1)">+1</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-gray-600">Line</span>
+                                        <div class="grid grid-cols-3 gap-1">
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('medium', -2)">-2</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('medium', 0)">0</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('medium', 2)">+2</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">LINE HEIGHTS</label>
-                            <div class="space-y-2">
-                                <input type="text" id="tipo-tight" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="tight: 1.25">
-                                <input type="text" id="tipo-normal" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="normal: 1.5">
-                                <input type="text" id="tipo-relaxed" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="relaxed: 1.75">
+                            <div>
+                                <span class="text-xs text-gray-500">Grandes (24-36px)</span>
+                                <div class="grid grid-cols-2 gap-2 mt-1">
+                                    <div>
+                                        <span class="text-xs text-gray-600">Letter</span>
+                                        <div class="grid grid-cols-3 gap-1">
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('large', -1)">-1</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('large', 0)">0</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('large', 1)">+1</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-gray-600">Line</span>
+                                        <div class="grid grid-cols-3 gap-1">
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('large', -4)">-4</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('large', 0)">0</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('large', 4)">+4</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="text-xs text-gray-500">Gigantes (48px+)</span>
+                                <div class="grid grid-cols-2 gap-2 mt-1">
+                                    <div>
+                                        <span class="text-xs text-gray-600">Letter</span>
+                                        <div class="grid grid-cols-3 gap-1">
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('giant', -2)">-2</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('giant', 0)">0</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLetterSpacing('giant', 2)">+2</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <span class="text-xs text-gray-600">Line</span>
+                                        <div class="grid grid-cols-3 gap-1">
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('giant', -6)">-6</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('giant', 0)">0</button>
+                                            <button class="tag-btn py-1 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setLineHeight('giant', 6)">+6</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Aba Cores -->
-                    <div id="content-cores" class="tab-content space-y-4 hidden">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">PRIMÁRIAS</label>
+                    <div id="content-cores" class="tab-content space-y-3 hidden">
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">PRINCIPAIS (3 cores)</label>
                             <div class="space-y-2">
-                                <input type="text" id="cor-primary" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="primary: #3b82f6">
-                                <input type="text" id="cor-primary-dark" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="primary-dark: #2563eb">
-                                <input type="text" id="cor-primary-light" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="primary-light: #60a5fa">
+                                <input type="color" id="cor-primary" class="w-full h-10 rounded cursor-pointer" style="background-color: #1a1a18; border: 1px solid #3a3a38;" value="#3b82f6">
+                                <input type="color" id="cor-secondary" class="w-full h-10 rounded cursor-pointer" style="background-color: #1a1a18; border: 1px solid #3a3a38;" value="#8b5cf6">
+                                <input type="color" id="cor-tertiary" class="w-full h-10 rounded cursor-pointer" style="background-color: #1a1a18; border: 1px solid #3a3a38;" value="#10b981">
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">SECUNDÁRIAS</label>
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">AUXILIARES (5 cores)</label>
                             <div class="space-y-2">
-                                <input type="text" id="cor-secondary" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="secondary: #8b5cf6">
-                                <input type="text" id="cor-secondary-dark" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="secondary-dark: #7c3aed">
-                                <input type="text" id="cor-secondary-light" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="secondary-light: #a78bfa">
+                                <input type="color" id="cor-aux-1" class="w-full h-10 rounded cursor-pointer" style="background-color: #1a1a18; border: 1px solid #3a3a38;" value="#f59e0b">
+                                <input type="color" id="cor-aux-2" class="w-full h-10 rounded cursor-pointer" style="background-color: #1a1a18; border: 1px solid #3a3a38;" value="#ef4444">
+                                <input type="color" id="cor-aux-3" class="w-full h-10 rounded cursor-pointer" style="background-color: #1a1a18; border: 1px solid #3a3a38;" value="#06b6d4">
+                                <input type="color" id="cor-aux-4" class="w-full h-10 rounded cursor-pointer" style="background-color: #1a1a18; border: 1px solid #3a3a38;" value="#ec4899">
+                                <input type="color" id="cor-aux-5" class="w-full h-10 rounded cursor-pointer" style="background-color: #1a1a18; border: 1px solid #3a3a38;" value="#6366f1">
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">NEUTRAS</label>
-                            <div class="space-y-2">
-                                <input type="text" id="cor-white" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="white: #ffffff">
-                                <input type="text" id="cor-black" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="black: #000000">
-                                <input type="text" id="cor-gray-100" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="gray-100: #f3f4f6">
-                                <input type="text" id="cor-gray-500" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="gray-500: #6b7280">
-                                <input type="text" id="cor-gray-900" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="gray-900: #111827">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">SEMÂNTICAS</label>
-                            <div class="space-y-2">
-                                <input type="text" id="cor-success" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="success: #10b981">
-                                <input type="text" id="cor-warning" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="warning: #f59e0b">
-                                <input type="text" id="cor-error" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="error: #ef4444">
-                                <input type="text" id="cor-info" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="info: #3b82f6">
-                            </div>
+                        <div class="rounded p-2 text-xs text-gray-500" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <p>💡 Tema dark/light será gerado automaticamente baseado nas cores selecionadas</p>
                         </div>
                     </div>
 
-                    <!-- Aba Spacing -->
-                    <div id="content-spacing" class="tab-content space-y-4 hidden">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">SPACING SCALE</label>
-                            <div class="space-y-2">
-                                <input type="text" id="space-0" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="0: 0px">
-                                <input type="text" id="space-1" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="1: 4px">
-                                <input type="text" id="space-2" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="2: 8px">
-                                <input type="text" id="space-3" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="3: 12px">
-                                <input type="text" id="space-4" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="4: 16px">
-                                <input type="text" id="space-5" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="5: 20px">
-                                <input type="text" id="space-6" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="6: 24px">
-                                <input type="text" id="space-8" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="8: 32px">
-                                <input type="text" id="space-10" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="10: 40px">
-                                <input type="text" id="space-12" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="12: 48px">
-                                <input type="text" id="space-16" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="16: 64px">
+                    <!-- Aba Espaçamento -->
+                    <div id="content-espacamento" class="tab-content space-y-3 hidden">
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">ESPAÇAMENTO BASE</label>
+                            <p class="text-xs text-gray-500">Escolha o valor mais comum no layout</p>
+                            <div class="grid grid-cols-4 gap-2 mt-2">
+                                <button class="tag-btn py-2 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setBaseSpacing(4)">4px</button>
+                                <button class="tag-btn py-2 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setBaseSpacing(8)">8px</button>
+                                <button class="tag-btn py-2 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setBaseSpacing(12)">12px</button>
+                                <button class="tag-btn py-2 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setBaseSpacing(16)">16px</button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Aba Radius -->
-                    <div id="content-radius" class="tab-content space-y-4 hidden">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-400 mb-2">BORDER RADIUS SCALE</label>
-                            <div class="space-y-2">
-                                <input type="text" id="radius-none" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="none: 0px">
-                                <input type="text" id="radius-sm" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="sm: 2px">
-                                <input type="text" id="radius-base" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="base: 4px">
-                                <input type="text" id="radius-md" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="md: 6px">
-                                <input type="text" id="radius-lg" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="lg: 8px">
-                                <input type="text" id="radius-xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="xl: 12px">
-                                <input type="text" id="radius-2xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="2xl: 16px">
-                                <input type="text" id="radius-3xl" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="3xl: 24px">
-                                <input type="text" id="radius-full" class="w-full p-2 text-white rounded text-xs" style="background-color: #1a1a18; border: 1px solid #3a3a38;" placeholder="full: 9999px">
+                        <div class="rounded p-3 space-y-2" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <label class="block text-xs font-medium text-gray-400">BORDER RADIUS</label>
+                            <p class="text-xs text-gray-500">Escolha o valor mais comum</p>
+                            <div class="grid grid-cols-5 gap-2 mt-2">
+                                <button class="tag-btn py-2 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setBaseRadius(0)">0</button>
+                                <button class="tag-btn py-2 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setBaseRadius(4)">4px</button>
+                                <button class="tag-btn py-2 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setBaseRadius(8)">8px</button>
+                                <button class="tag-btn py-2 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setBaseRadius(12)">12px</button>
+                                <button class="tag-btn py-2 rounded text-xs" style="background-color: #3a3a38; color: #ffffff;" onclick="setBaseRadius(16)">16px</button>
                             </div>
+                        </div>
+
+                        <div class="rounded p-2 text-xs text-gray-500" style="background-color: #1a1a18; border: 1px solid #3a3a38;">
+                            <p>💡 Valores múltiplos serão gerados automaticamente (x0.5, x1, x1.5, x2, x3, x4...)</p>
                         </div>
                     </div>
 

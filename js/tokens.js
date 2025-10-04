@@ -541,45 +541,47 @@ function switchTab(tabName) {
 // Event listeners das abas
 document.getElementById('tab-tipografia').addEventListener('click', () => switchTab('tipografia'));
 document.getElementById('tab-cores').addEventListener('click', () => switchTab('cores'));
-document.getElementById('tab-spacing').addEventListener('click', () => switchTab('spacing'));
-document.getElementById('tab-radius').addEventListener('click', () => switchTab('radius'));
+document.getElementById('tab-espacamento').addEventListener('click', () => switchTab('espacamento'));
 
 // Geração de tokens
-generateBtn.addEventListener('click', () => {
-    try {
-        const format = formatSelect.value;
-        let result = '';
+if (generateBtn) {
+    generateBtn.addEventListener('click', () => {
+        try {
+            const format = formatSelect.value;
+            let result = '';
 
-        switch(format) {
-            case 'prompt':
-                result = generatePrompt();
-                break;
-            case 'css':
-                result = generateCSS();
-                break;
-            case 'js':
-                result = generateJS();
-                break;
-            case 'tailwind':
-                result = generateTailwind();
-                break;
-            case 'scss':
-                result = generateSCSS();
-                break;
-            default:
-                result = '// Formato não suportado';
+            switch(format) {
+                case 'prompt':
+                    result = generatePrompt();
+                    break;
+                case 'css':
+                    result = generateCSS();
+                    break;
+                case 'js':
+                    result = generateJS();
+                    break;
+                case 'tailwind':
+                    result = generateTailwind();
+                    break;
+                case 'scss':
+                    result = generateSCSS();
+                    break;
+                default:
+                    result = '// Formato não suportado';
+            }
+
+            resultadoEl.textContent = result;
+        } catch (error) {
+            console.error('Erro na geração:', error);
+            showToast('Erro ao gerar tokens', true);
+            resultadoEl.textContent = `// Erro: ${error.message}`;
         }
-
-        resultadoEl.textContent = result;
-    } catch (error) {
-        console.error('Erro na geração:', error);
-        showToast('Erro ao gerar tokens', true);
-        resultadoEl.textContent = `// Erro: ${error.message}`;
-    }
-});
+    });
+}
 
 // Clipboard
-copyBtn.addEventListener('click', async () => {
+if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
     try {
         const textoParaCopiar = resultadoEl.textContent;
 
@@ -601,7 +603,8 @@ copyBtn.addEventListener('click', async () => {
         console.error('Erro ao copiar:', error);
         showToast('Erro ao copiar texto', true);
     }
-});
+    });
+}
 
 // Toast
 function showToast(message, isError = false) {
@@ -624,6 +627,97 @@ function showToast(message, isError = false) {
 document.querySelectorAll('input').forEach(el => {
     el.addEventListener('input', updateVisualPreview);
 });
+
+// ===== DROPDOWN DE MODOS =====
+
+const modeDropdownBtn = document.getElementById('mode-dropdown-btn');
+const modeDropdown = document.getElementById('mode-dropdown');
+const modeText = document.getElementById('mode-text');
+const chevronIcon = document.getElementById('chevron-icon');
+
+// Toggle dropdown
+if (modeDropdownBtn && modeDropdown && chevronIcon) {
+    modeDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        modeDropdown.classList.toggle('hidden');
+        chevronIcon.style.transform = modeDropdown.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+    // Fecha dropdown ao clicar fora
+    document.addEventListener('click', (e) => {
+        if (!modeDropdown.contains(e.target) && e.target !== modeDropdownBtn) {
+            modeDropdown.classList.add('hidden');
+            chevronIcon.style.transform = 'rotate(0deg)';
+        }
+    });
+
+    // Selecionar modo
+    document.querySelectorAll('.mode-option').forEach(option => {
+        option.addEventListener('click', (e) => {
+            const mode = e.target.dataset.mode;
+
+            if (mode === 'dev') {
+                if (modeText) modeText.textContent = 'Dev mode';
+                window.location.href = 'index.html';
+            } else if (mode === 'design') {
+                if (modeText) modeText.textContent = 'Design mode';
+                window.location.href = 'design.html';
+            } else if (mode === 'tokens') {
+                if (modeText) modeText.textContent = 'Tokens';
+                // Já estamos na página correta
+            }
+
+            modeDropdown.classList.add('hidden');
+            chevronIcon.style.transform = 'rotate(0deg)';
+        });
+    });
+}
+
+// ===== FUNÇÕES PARA TIPOGRAFIA =====
+
+// Armazenar valores de ajuste
+const typographySettings = {
+    small: { letterSpacing: 0, lineHeight: 0 },
+    medium: { letterSpacing: 0, lineHeight: 0 },
+    large: { letterSpacing: 0, lineHeight: 0 },
+    giant: { letterSpacing: 0, lineHeight: 0 }
+};
+
+// Função global para Letter Spacing
+window.setLetterSpacing = function(size, value) {
+    typographySettings[size].letterSpacing = value;
+    console.log(`Letter spacing ${size}:`, value);
+    updateVisualPreview();
+}
+
+// Função global para Line Height
+window.setLineHeight = function(size, value) {
+    typographySettings[size].lineHeight = value;
+    console.log(`Line height ${size}:`, value);
+    updateVisualPreview();
+}
+
+// ===== FUNÇÕES PARA ESPAÇAMENTO =====
+
+let baseSpacing = 8;
+let baseRadius = 8;
+
+// Função global para Base Spacing
+window.setBaseSpacing = function(value) {
+    baseSpacing = value;
+    console.log('Base spacing:', value);
+    updateVisualPreview();
+}
+
+// Função global para Base Radius
+window.setBaseRadius = function(value) {
+    baseRadius = value;
+    console.log('Base radius:', value);
+    updateVisualPreview();
+}
+
+// Event listener para mudança de aba (incluindo nova aba espacamento)
+document.getElementById('tab-espacamento')?.addEventListener('click', () => switchTab('espacamento'));
 
 // Inicializa preview
 updateVisualPreview();
